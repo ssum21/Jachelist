@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "206060054869",
+    "project_id": "jachelist-nwztxh",
+    "storage_bucket": "jachelist-nwztxh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206060054869:android:f30371e1b90196251467dc",
+        "android_client_info": {
+          "package_name": "com.flutterflow.homeU"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbKMN9cfxTQ_Y5k2TFe0is-TWpQBKlSf4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
