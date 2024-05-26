@@ -1,4 +1,3 @@
-import '/backend/backend.dart';
 import '/components/amenitity_indicator/amenitity_indicator_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';

@@ -74,6 +74,9 @@ abstract class FlutterFlowTheme {
   late Color gray600;
   late Color lineGray;
   late Color starColor;
+  late Color prioirtyFirst;
+  late Color prioritySecond;
+  late Color priorityThrid;
 
   @Deprecated('Use displaySmallFamily instead')
   String get title1Family => displaySmallFamily;
@@ -189,6 +192,9 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color gray600 = Color(0xFF57636C);
   late Color lineGray = Color(0xFFE1EDF9);
   late Color starColor = Color(0xFFFFA130);
+  late Color prioirtyFirst = Color(0xFFC33AF0);
+  late Color prioritySecond = Color(0xFF873AF0);
+  late Color priorityThrid = Color(0xFF4C3AF0);
 }
 
 abstract class Typography {
@@ -596,6 +602,9 @@ class DarkModeTheme extends FlutterFlowTheme {
   late Color gray600 = Color(0xFF57636C);
   late Color lineGray = Color(0xFF262D34);
   late Color starColor = Color(0xFFA33B8E);
+  late Color prioirtyFirst = Color(0xFF66FE3A);
+  late Color prioritySecond = Color(0xFF86CEDC);
+  late Color priorityThrid = Color(0xFF8DE93C);
 }
 
 extension TextStyleHelper on TextStyle {

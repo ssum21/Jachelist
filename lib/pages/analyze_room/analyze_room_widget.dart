@@ -156,7 +156,7 @@ class _AnalyzeRoomWidgetState extends State<AnalyzeRoomWidget> {
                                     4.0, 0.0, 0.0, 12.0),
                                 child: Icon(
                                   Icons.star_rounded,
-                                  color: FlutterFlowTheme.of(context).warning,
+                                  color: FlutterFlowTheme.of(context).starColor,
                                   size: 24.0,
                                 ),
                               ),

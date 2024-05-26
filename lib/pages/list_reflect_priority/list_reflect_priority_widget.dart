@@ -1,4 +1,3 @@
-import '/backend/backend.dart';
 import '/components/amenitity_indicator/amenitity_indicator_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
@@ -11,12 +10,7 @@ import 'list_reflect_priority_model.dart';
 export 'list_reflect_priority_model.dart';
 
 class ListReflectPriorityWidget extends StatefulWidget {
-  const ListReflectPriorityWidget({
-    super.key,
-    this.propertyRef,
-  });
-
-  final PropertiesRecord? propertyRef;
+  const ListReflectPriorityWidget({super.key});
 
   @override
   State<ListReflectPriorityWidget> createState() =>
@@ -118,26 +112,24 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                           children: [
                             Stack(
                               children: [
-                                if (!_model.amenityPoolValue1!)
-                                  Align(
-                                    alignment: AlignmentDirectional(0.0, 0.0),
-                                    child: wrapWithModel(
-                                      model: _model.amenitityIndicatorModel1,
-                                      updateCallback: () => setState(() {}),
-                                      child: AmenitityIndicatorWidget(
-                                        icon: Icon(
-                                          Icons.monetization_on,
-                                          color: FlutterFlowTheme.of(context)
-                                              .gray600,
-                                        ),
-                                        background: FlutterFlowTheme.of(context)
-                                            .secondaryBackground,
-                                        borderColor:
-                                            FlutterFlowTheme.of(context)
-                                                .lineGray,
+                                Align(
+                                  alignment: AlignmentDirectional(0.0, 0.0),
+                                  child: wrapWithModel(
+                                    model: _model.amenitityIndicatorModel1,
+                                    updateCallback: () => setState(() {}),
+                                    child: AmenitityIndicatorWidget(
+                                      icon: Icon(
+                                        Icons.monetization_on,
+                                        color: FlutterFlowTheme.of(context)
+                                            .gray600,
                                       ),
+                                      background: FlutterFlowTheme.of(context)
+                                          .secondaryBackground,
+                                      borderColor:
+                                          FlutterFlowTheme.of(context).lineGray,
                                     ),
                                   ),
+                                ),
                               ],
                             ),
                             Expanded(
@@ -148,9 +140,9 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityPoolValue1 = newValue!);
                                   if (newValue!) {
-                                    FFAppState().switchPrice = false;
-                                  } else {
                                     FFAppState().switchPrice = true;
+                                  } else {
+                                    FFAppState().switchPrice = false;
                                   }
                                 },
                                 title: Text(
@@ -165,7 +157,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Price',
+                                  FFAppState().StringPriorityPrice,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -224,6 +216,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                 onChanged: (newValue) async {
                                   setState(() => _model.amenityEVChargingValue =
                                       newValue!);
+                                  if (newValue!) {
+                                    FFAppState().switchRoomsize = true;
+                                  } else {
+                                    FFAppState().switchRoomsize = false;
+                                  }
                                 },
                                 title: Text(
                                   '방 크기 및 구조',
@@ -240,7 +237,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Room Size',
+                                  FFAppState().StringPriorityRoomSize,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -299,6 +296,15 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                 onChanged: (newValue) async {
                                   setState(() => _model
                                       .amenityExtraOutletsValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchwaterdrain = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchwaterdrain = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '수도 및 배수',
@@ -315,7 +321,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Water Drainaging',
+                                  FFAppState().StringPriorityWaterDrainage,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -374,6 +380,15 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                 onChanged: (newValue) async {
                                   setState(
                                       () => _model.amenityACValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().swtichbathroom = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().swtichbathroom = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '화장실',
@@ -390,7 +405,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Bathroom',
+                                  FFAppState().StringPriorityBathroom,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -444,10 +459,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityHeatingValue ??= false,
+                                value: _model.amenityHeatingValue ??=
+                                    FFAppState().switchBasicOption,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityHeatingValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchBasicOption = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchBasicOption = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '기본 옵션',
@@ -464,7 +489,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Basic Option',
+                                  FFAppState().StringPriorityBasicOption,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -518,10 +543,21 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityWasherValue ??= false,
+                                value: _model.amenityWasherValue ??=
+                                    FFAppState().sWitchGarbageDisposal,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityWasherValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().sWitchGarbageDisposal = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().sWitchGarbageDisposal =
+                                          false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '쓰레기 처리',
@@ -538,7 +574,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Waste Disposal',
+                                  FFAppState().StringPriorityGarbageDisPosal,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -592,10 +628,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityDryerValue ??= false,
+                                value: _model.amenityDryerValue ??=
+                                    FFAppState().switchFloor,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityDryerValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchFloor = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchFloor = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '층수',
@@ -612,7 +658,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Floor',
+                                  FFAppState().StringPriorityFloor,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -666,10 +712,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityPetsValue ??= false,
+                                value: _model.amenityPetsValue ??=
+                                    FFAppState().switchSecurity,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityPetsValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchSecurity = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchSecurity = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '보안',
@@ -686,7 +742,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Security',
+                                  FFAppState().StringPrioritySecurity,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -740,10 +796,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityWorkoutValue ??= false,
+                                value: _model.amenityWorkoutValue ??=
+                                    FFAppState().switchwindows,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityWorkoutValue = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchwindows = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchwindows = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '창문 및 조향',
@@ -760,7 +826,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Windows',
+                                  FFAppState().StringPriorityWindows,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -814,10 +880,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityPoolValue2 ??= false,
+                                value: _model.amenityPoolValue2 ??=
+                                    FFAppState().switchcleanliness,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityPoolValue2 = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchcleanliness = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchcleanliness = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '청결도',
@@ -834,7 +910,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Cleanliness',
+                                  FFAppState().StringPriorityCleaness,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -888,10 +964,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityPoolValue3 ??= false,
+                                value: _model.amenityPoolValue3 ??=
+                                    FFAppState().switchConvenience,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityPoolValue3 = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchConvenience = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchConvenience = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '편의시설',
@@ -908,7 +994,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Convenience',
+                                  FFAppState().StringPriorityConvenience,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -962,10 +1048,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityPoolValue4 ??= false,
+                                value: _model.amenityPoolValue4 ??=
+                                    FFAppState().switchSoundproofing,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityPoolValue4 = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchSoundproofing = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchSoundproofing = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '방음',
@@ -982,7 +1078,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Soundproofing',
+                                  FFAppState().StringPrioritySoundProofing,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -1036,10 +1132,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                             ),
                             Expanded(
                               child: SwitchListTile.adaptive(
-                                value: _model.amenityPoolValue5 ??= false,
+                                value: _model.amenityPoolValue5 ??=
+                                    FFAppState().switchParkingArea,
                                 onChanged: (newValue) async {
                                   setState(() =>
                                       _model.amenityPoolValue5 = newValue!);
+                                  if (newValue!) {
+                                    setState(() {
+                                      FFAppState().switchParkingArea = true;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      FFAppState().switchParkingArea = false;
+                                    });
+                                  }
                                 },
                                 title: Text(
                                   '주차공간',
@@ -1056,7 +1162,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                       ),
                                 ),
                                 subtitle: Text(
-                                  'Parking Area',
+                                  FFAppState().StringPriorityParkingArea,
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -1114,10 +1220,20 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                               ),
                               Expanded(
                                 child: SwitchListTile.adaptive(
-                                  value: _model.amenityPoolValue6 ??= false,
+                                  value: _model.amenityPoolValue6 ??=
+                                      FFAppState().switchSmokingArea,
                                   onChanged: (newValue) async {
                                     setState(() =>
                                         _model.amenityPoolValue6 = newValue!);
+                                    if (newValue!) {
+                                      setState(() {
+                                        FFAppState().switchSmokingArea = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        FFAppState().switchSmokingArea = false;
+                                      });
+                                    }
                                   },
                                   title: Text(
                                     '흡연 구역',
@@ -1135,7 +1251,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                         ),
                                   ),
                                   subtitle: Text(
-                                    'Smoking Area',
+                                    FFAppState().StringPrioritySmokingArea,
                                     style: FlutterFlowTheme.of(context)
                                         .bodyMedium
                                         .override(

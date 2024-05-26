@@ -4,7 +4,7 @@ service cloud.firestore {
     match /properties/{document} {
       allow create: if true;
       allow read: if true;
-      allow write: if request.auth != null;
+      allow write: if false;
       allow delete: if false;
     }
 
@@ -13,34 +13,6 @@ service cloud.firestore {
       allow read: if true;
       allow write: if request.auth.uid == document;
       allow delete: if request.auth.uid == document;
-    }
-
-    match /reviews/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if false;
-    }
-
-    match /trips/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if true;
-      allow delete: if false;
-    }
-
-    match /payments/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if false;
-    }
-
-    match /bookings/{document} {
-      allow create: if true;
-      allow read: if true;
-      allow write: if request.auth != null;
-      allow delete: if false;
     }
 
     match /RoomInfo/{document} {
@@ -82,6 +54,138 @@ service cloud.firestore {
     }
 
     match /{path=**}/RoomWaterDrainage/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomBathroom/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomBathroom/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomBasicOption/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomBasicOption/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomGarbageDisposal/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomGarbageDisposal/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomFloor/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomFloor/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomSecurity/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomSecurity/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomWindows/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomWindows/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomCleanliness/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomCleanliness/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomConvenience/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomConvenience/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomSoundProofing/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomSoundProofing/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomParkingArea/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomParkingArea/{document} {
+      allow read: if true;
+    }
+
+
+    match /RoomInfo/{parent}/RoomSmokingArea/{document} {
+      allow create: if true;
+      allow read: if true;
+      allow write: if false;
+      allow delete: if false;
+    }
+
+    match /{path=**}/RoomSmokingArea/{document} {
       allow read: if true;
     }
 

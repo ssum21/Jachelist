@@ -93,14 +93,20 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           path: '/homePageMAIN',
           builder: (context, params) => params.isEmpty
               ? NavBarPage(initialPage: 'homePage_MAIN')
-              : HomePageMAINWidget(),
+              : NavBarPage(
+                  initialPage: 'homePage_MAIN',
+                  page: HomePageMAINWidget(),
+                ),
         ),
         FFRoute(
           name: 'profileSettingPage',
           path: '/profileSettingPage',
           builder: (context, params) => params.isEmpty
               ? NavBarPage(initialPage: 'profileSettingPage')
-              : ProfileSettingPageWidget(),
+              : NavBarPage(
+                  initialPage: 'profileSettingPage',
+                  page: ProfileSettingPageWidget(),
+                ),
         ),
         FFRoute(
           name: 'editProfile',
@@ -116,23 +122,6 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           ),
         ),
         FFRoute(
-          name: 'AddRoom',
-          path: '/addRoom',
-          asyncParams: {
-            'propertyRef': getDoc(['RoomInfo'], RoomInfoRecord.fromSnapshot),
-          },
-          builder: (context, params) => AddRoomWidget(
-            propertyRef: params.getParam(
-              'propertyRef',
-              ParamType.Document,
-            ),
-            roomimageuploaded1: params.getParam(
-              'roomimageuploaded1',
-              ParamType.FFUploadedFile,
-            ),
-          ),
-        ),
-        FFRoute(
           name: 'PrioritySetting',
           path: '/prioritySetting',
           builder: (context, params) => PrioritySettingWidget(),
@@ -140,37 +129,19 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'ListReflectPriority',
           path: '/listReflectPriority',
-          asyncParams: {
-            'propertyRef':
-                getDoc(['properties'], PropertiesRecord.fromSnapshot),
-          },
-          builder: (context, params) => ListReflectPriorityWidget(
-            propertyRef: params.getParam(
-              'propertyRef',
-              ParamType.Document,
-            ),
-          ),
+          builder: (context, params) => ListReflectPriorityWidget(),
         ),
         FFRoute(
           name: 'RoomStarReview',
           path: '/roomStarReview',
           asyncParams: {
-            'propertyRef':
-                getDoc(['properties'], PropertiesRecord.fromSnapshot),
-            'roominfo': getDoc(['RoomInfo'], RoomInfoRecord.fromSnapshot),
+            'tempRoomInfoDocu':
+                getDoc(['RoomInfo'], RoomInfoRecord.fromSnapshot),
           },
           builder: (context, params) => RoomStarReviewWidget(
-            propertyRef: params.getParam(
-              'propertyRef',
+            tempRoomInfoDocu: params.getParam(
+              'tempRoomInfoDocu',
               ParamType.Document,
-            ),
-            roominfo: params.getParam(
-              'roominfo',
-              ParamType.Document,
-            ),
-            roomname: params.getParam(
-              'roomname',
-              ParamType.String,
             ),
           ),
         ),
@@ -178,6 +149,11 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'AnalyzeRoom',
           path: '/analyzeRoom',
           builder: (context, params) => AnalyzeRoomWidget(),
+        ),
+        FFRoute(
+          name: 'AddRoom',
+          path: '/addRoom',
+          builder: (context, params) => AddRoomWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );

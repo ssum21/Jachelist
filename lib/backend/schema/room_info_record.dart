@@ -36,17 +36,23 @@ class RoomInfoRecord extends FirestoreRecord {
   String get roomImage => _roomImage ?? '';
   bool hasRoomImage() => _roomImage != null;
 
-  // "PriceRatings" field.
-  List<int>? _priceRatings;
-  List<int> get priceRatings => _priceRatings ?? const [];
-  bool hasPriceRatings() => _priceRatings != null;
+  // "RoomTotalReview" field.
+  double? _roomTotalReview;
+  double get roomTotalReview => _roomTotalReview ?? 0.0;
+  bool hasRoomTotalReview() => _roomTotalReview != null;
+
+  // "RoomPriorityAvg" field.
+  double? _roomPriorityAvg;
+  double get roomPriorityAvg => _roomPriorityAvg ?? 0.0;
+  bool hasRoomPriorityAvg() => _roomPriorityAvg != null;
 
   void _initializeFields() {
     _roomName = snapshotData['RoomName'] as String?;
     _roomAdress = snapshotData['RoomAdress'] as String?;
     _roomDescription = snapshotData['RoomDescription'] as String?;
     _roomImage = snapshotData['RoomImage'] as String?;
-    _priceRatings = getDataList(snapshotData['PriceRatings']);
+    _roomTotalReview = castToType<double>(snapshotData['RoomTotalReview']);
+    _roomPriorityAvg = castToType<double>(snapshotData['RoomPriorityAvg']);
   }
 
   static CollectionReference get collection =>
@@ -88,6 +94,8 @@ Map<String, dynamic> createRoomInfoRecordData({
   String? roomAdress,
   String? roomDescription,
   String? roomImage,
+  double? roomTotalReview,
+  double? roomPriorityAvg,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -95,6 +103,8 @@ Map<String, dynamic> createRoomInfoRecordData({
       'RoomAdress': roomAdress,
       'RoomDescription': roomDescription,
       'RoomImage': roomImage,
+      'RoomTotalReview': roomTotalReview,
+      'RoomPriorityAvg': roomPriorityAvg,
     }.withoutNulls,
   );
 
@@ -106,12 +116,12 @@ class RoomInfoRecordDocumentEquality implements Equality<RoomInfoRecord> {
 
   @override
   bool equals(RoomInfoRecord? e1, RoomInfoRecord? e2) {
-    const listEquality = ListEquality();
     return e1?.roomName == e2?.roomName &&
         e1?.roomAdress == e2?.roomAdress &&
         e1?.roomDescription == e2?.roomDescription &&
         e1?.roomImage == e2?.roomImage &&
-        listEquality.equals(e1?.priceRatings, e2?.priceRatings);
+        e1?.roomTotalReview == e2?.roomTotalReview &&
+        e1?.roomPriorityAvg == e2?.roomPriorityAvg;
   }
 
   @override
@@ -120,7 +130,8 @@ class RoomInfoRecordDocumentEquality implements Equality<RoomInfoRecord> {
         e?.roomAdress,
         e?.roomDescription,
         e?.roomImage,
-        e?.priceRatings
+        e?.roomTotalReview,
+        e?.roomPriorityAvg
       ]);
 
   @override

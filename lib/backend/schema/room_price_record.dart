@@ -16,47 +16,59 @@ class RoomPriceRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "DepositReview" field.
-  double? _depositReview;
-  double get depositReview => _depositReview ?? 0.0;
-  bool hasDepositReview() => _depositReview != null;
-
-  // "AdministrationReview" field.
-  double? _administrationReview;
-  double get administrationReview => _administrationReview ?? 0.0;
-  bool hasAdministrationReview() => _administrationReview != null;
-
-  // "InternetFeeReview" field.
-  double? _internetFeeReview;
-  double get internetFeeReview => _internetFeeReview ?? 0.0;
-  bool hasInternetFeeReview() => _internetFeeReview != null;
-
-  // "ElectricandWaterFeeReview" field.
-  double? _electricandWaterFeeReview;
-  double get electricandWaterFeeReview => _electricandWaterFeeReview ?? 0.0;
-  bool hasElectricandWaterFeeReview() => _electricandWaterFeeReview != null;
-
   // "LivingTypeReview" field.
   int? _livingTypeReview;
   int get livingTypeReview => _livingTypeReview ?? 0;
   bool hasLivingTypeReview() => _livingTypeReview != null;
 
-  // "RoomPriceReview" field.
-  List<int>? _roomPriceReview;
-  List<int> get roomPriceReview => _roomPriceReview ?? const [];
-  bool hasRoomPriceReview() => _roomPriceReview != null;
+  // "DepositCost" field.
+  double? _depositCost;
+  double get depositCost => _depositCost ?? 0.0;
+  bool hasDepositCost() => _depositCost != null;
+
+  // "AdministrationCost" field.
+  double? _administrationCost;
+  double get administrationCost => _administrationCost ?? 0.0;
+  bool hasAdministrationCost() => _administrationCost != null;
+
+  // "ParkingCost" field.
+  double? _parkingCost;
+  double get parkingCost => _parkingCost ?? 0.0;
+  bool hasParkingCost() => _parkingCost != null;
+
+  // "InternetFeeCost" field.
+  double? _internetFeeCost;
+  double get internetFeeCost => _internetFeeCost ?? 0.0;
+  bool hasInternetFeeCost() => _internetFeeCost != null;
+
+  // "ElectricAndWaterFeeCost" field.
+  double? _electricAndWaterFeeCost;
+  double get electricAndWaterFeeCost => _electricAndWaterFeeCost ?? 0.0;
+  bool hasElectricAndWaterFeeCost() => _electricAndWaterFeeCost != null;
+
+  // "MonthCost" field.
+  double? _monthCost;
+  double get monthCost => _monthCost ?? 0.0;
+  bool hasMonthCost() => _monthCost != null;
+
+  // "PriceReview" field.
+  double? _priceReview;
+  double get priceReview => _priceReview ?? 0.0;
+  bool hasPriceReview() => _priceReview != null;
 
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
-    _depositReview = castToType<double>(snapshotData['DepositReview']);
-    _administrationReview =
-        castToType<double>(snapshotData['AdministrationReview']);
-    _internetFeeReview = castToType<double>(snapshotData['InternetFeeReview']);
-    _electricandWaterFeeReview =
-        castToType<double>(snapshotData['ElectricandWaterFeeReview']);
     _livingTypeReview = castToType<int>(snapshotData['LivingTypeReview']);
-    _roomPriceReview = getDataList(snapshotData['RoomPriceReview']);
+    _depositCost = castToType<double>(snapshotData['DepositCost']);
+    _administrationCost =
+        castToType<double>(snapshotData['AdministrationCost']);
+    _parkingCost = castToType<double>(snapshotData['ParkingCost']);
+    _internetFeeCost = castToType<double>(snapshotData['InternetFeeCost']);
+    _electricAndWaterFeeCost =
+        castToType<double>(snapshotData['ElectricAndWaterFeeCost']);
+    _monthCost = castToType<double>(snapshotData['MonthCost']);
+    _priceReview = castToType<double>(snapshotData['PriceReview']);
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -99,19 +111,25 @@ class RoomPriceRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createRoomPriceRecordData({
-  double? depositReview,
-  double? administrationReview,
-  double? internetFeeReview,
-  double? electricandWaterFeeReview,
   int? livingTypeReview,
+  double? depositCost,
+  double? administrationCost,
+  double? parkingCost,
+  double? internetFeeCost,
+  double? electricAndWaterFeeCost,
+  double? monthCost,
+  double? priceReview,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'DepositReview': depositReview,
-      'AdministrationReview': administrationReview,
-      'InternetFeeReview': internetFeeReview,
-      'ElectricandWaterFeeReview': electricandWaterFeeReview,
       'LivingTypeReview': livingTypeReview,
+      'DepositCost': depositCost,
+      'AdministrationCost': administrationCost,
+      'ParkingCost': parkingCost,
+      'InternetFeeCost': internetFeeCost,
+      'ElectricAndWaterFeeCost': electricAndWaterFeeCost,
+      'MonthCost': monthCost,
+      'PriceReview': priceReview,
     }.withoutNulls,
   );
 
@@ -123,23 +141,26 @@ class RoomPriceRecordDocumentEquality implements Equality<RoomPriceRecord> {
 
   @override
   bool equals(RoomPriceRecord? e1, RoomPriceRecord? e2) {
-    const listEquality = ListEquality();
-    return e1?.depositReview == e2?.depositReview &&
-        e1?.administrationReview == e2?.administrationReview &&
-        e1?.internetFeeReview == e2?.internetFeeReview &&
-        e1?.electricandWaterFeeReview == e2?.electricandWaterFeeReview &&
-        e1?.livingTypeReview == e2?.livingTypeReview &&
-        listEquality.equals(e1?.roomPriceReview, e2?.roomPriceReview);
+    return e1?.livingTypeReview == e2?.livingTypeReview &&
+        e1?.depositCost == e2?.depositCost &&
+        e1?.administrationCost == e2?.administrationCost &&
+        e1?.parkingCost == e2?.parkingCost &&
+        e1?.internetFeeCost == e2?.internetFeeCost &&
+        e1?.electricAndWaterFeeCost == e2?.electricAndWaterFeeCost &&
+        e1?.monthCost == e2?.monthCost &&
+        e1?.priceReview == e2?.priceReview;
   }
 
   @override
   int hash(RoomPriceRecord? e) => const ListEquality().hash([
-        e?.depositReview,
-        e?.administrationReview,
-        e?.internetFeeReview,
-        e?.electricandWaterFeeReview,
         e?.livingTypeReview,
-        e?.roomPriceReview
+        e?.depositCost,
+        e?.administrationCost,
+        e?.parkingCost,
+        e?.internetFeeCost,
+        e?.electricAndWaterFeeCost,
+        e?.monthCost,
+        e?.priceReview
       ]);
 
   @override

@@ -38,6 +38,16 @@ class RoomSizeRecord extends FirestoreRecord {
   bool hasEaseofFurnitureArrangementReview() =>
       _easeofFurnitureArrangementReview != null;
 
+  // "AvgSizeReview" field.
+  double? _avgSizeReview;
+  double get avgSizeReview => _avgSizeReview ?? 0.0;
+  bool hasAvgSizeReview() => _avgSizeReview != null;
+
+  // "AvgTest" field.
+  String? _avgTest;
+  String get avgTest => _avgTest ?? '';
+  bool hasAvgTest() => _avgTest != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -47,6 +57,8 @@ class RoomSizeRecord extends FirestoreRecord {
         castToType<double>(snapshotData['OpenSeparateTypeReview']);
     _easeofFurnitureArrangementReview =
         castToType<double>(snapshotData['EaseofFurnitureArrangementReview']);
+    _avgSizeReview = castToType<double>(snapshotData['AvgSizeReview']);
+    _avgTest = snapshotData['AvgTest'] as String?;
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -93,6 +105,8 @@ Map<String, dynamic> createRoomSizeRecordData({
   double? shapeRoomReview,
   double? openSeparateTypeReview,
   double? easeofFurnitureArrangementReview,
+  double? avgSizeReview,
+  String? avgTest,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -100,6 +114,8 @@ Map<String, dynamic> createRoomSizeRecordData({
       'ShapeRoomReview': shapeRoomReview,
       'OpenSeparateTypeReview': openSeparateTypeReview,
       'EaseofFurnitureArrangementReview': easeofFurnitureArrangementReview,
+      'AvgSizeReview': avgSizeReview,
+      'AvgTest': avgTest,
     }.withoutNulls,
   );
 
@@ -115,7 +131,9 @@ class RoomSizeRecordDocumentEquality implements Equality<RoomSizeRecord> {
         e1?.shapeRoomReview == e2?.shapeRoomReview &&
         e1?.openSeparateTypeReview == e2?.openSeparateTypeReview &&
         e1?.easeofFurnitureArrangementReview ==
-            e2?.easeofFurnitureArrangementReview;
+            e2?.easeofFurnitureArrangementReview &&
+        e1?.avgSizeReview == e2?.avgSizeReview &&
+        e1?.avgTest == e2?.avgTest;
   }
 
   @override
@@ -123,7 +141,9 @@ class RoomSizeRecordDocumentEquality implements Equality<RoomSizeRecord> {
         e?.roomSizeReview,
         e?.shapeRoomReview,
         e?.openSeparateTypeReview,
-        e?.easeofFurnitureArrangementReview
+        e?.easeofFurnitureArrangementReview,
+        e?.avgSizeReview,
+        e?.avgTest
       ]);
 
   @override

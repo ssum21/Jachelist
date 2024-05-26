@@ -4,7 +4,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'dart:math';
-import '/flutter_flow/custom_functions.dart' as functions;
 import 'dart:math' as math;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -420,10 +419,10 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
-                  child: StreamBuilder<List<PropertiesRecord>>(
-                    stream: queryPropertiesRecord(
-                      queryBuilder: (propertiesRecord) => propertiesRecord
-                          .orderBy('lastUpdated', descending: true),
+                  child: StreamBuilder<List<RoomInfoRecord>>(
+                    stream: queryRoomInfoRecord(
+                      queryBuilder: (roomInfoRecord) =>
+                          roomInfoRecord.orderBy('RoomName'),
                     ),
                     builder: (context, snapshot) {
                       // Customize what your widget looks like when it's loading.
@@ -440,17 +439,17 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                           ),
                         );
                       }
-                      List<PropertiesRecord> listViewPropertiesRecordList =
+                      List<RoomInfoRecord> listViewRoomInfoRecordList =
                           snapshot.data!;
                       return ListView.builder(
                         padding: EdgeInsets.zero,
                         primary: false,
                         shrinkWrap: true,
                         scrollDirection: Axis.vertical,
-                        itemCount: listViewPropertiesRecordList.length,
+                        itemCount: listViewRoomInfoRecordList.length,
                         itemBuilder: (context, listViewIndex) {
-                          final listViewPropertiesRecord =
-                              listViewPropertiesRecordList[listViewIndex];
+                          final listViewRoomInfoRecord =
+                              listViewRoomInfoRecordList[listViewIndex];
                           return Padding(
                             padding: EdgeInsetsDirectional.fromSTEB(
                                 16.0, 0.0, 16.0, 12.0),
@@ -475,7 +474,7 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Hero(
-                                    tag: '',
+                                    tag: listViewRoomInfoRecord.roomImage,
                                     transitionOnUserGestures: true,
                                     child: ClipRRect(
                                       borderRadius: BorderRadius.only(
@@ -490,7 +489,7 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                                         fadeOutDuration:
                                             Duration(milliseconds: 500),
                                         imageUrl:
-                                            'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w0NTYyMDF8MHwxfHNlYXJjaHwxMHx8cm9vbXxlbnwwfHx8fDE3MTY0NjE0NTN8MA&ixlib=rb-4.0.3&q=80&w=1080',
+                                            listViewRoomInfoRecord.roomImage,
                                         width: double.infinity,
                                         height: 190.0,
                                         fit: BoxFit.cover,
@@ -505,8 +504,7 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            listViewPropertiesRecord
-                                                .propertyName
+                                            listViewRoomInfoRecord.roomName
                                                 .maybeHandleOverflow(
                                               maxChars: 36,
                                               replacement: '…',
@@ -538,8 +536,7 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                                       children: [
                                         Expanded(
                                           child: Text(
-                                            listViewPropertiesRecord
-                                                .propertyNeighborhood
+                                            listViewRoomInfoRecord.roomAdress
                                                 .maybeHandleOverflow(
                                               maxChars: 90,
                                               replacement: '…',
@@ -564,150 +561,77 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
                                       ],
                                     ),
                                   ),
-                                  StreamBuilder<List<ReviewsRecord>>(
-                                    stream: queryReviewsRecord(
-                                      queryBuilder: (reviewsRecord) =>
-                                          reviewsRecord.where(
-                                        'propertyRef',
-                                        isEqualTo:
-                                            listViewPropertiesRecord.reference,
+                                  Container(
+                                    height: 40.0,
+                                    decoration: BoxDecoration(),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          16.0, 0.0, 24.0, 12.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        children: [
+                                          Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              formatNumber(
+                                                listViewRoomInfoRecord
+                                                    .roomTotalReview,
+                                                formatType: FormatType.decimal,
+                                                decimalType:
+                                                    DecimalType.automatic,
+                                              ),
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMediumFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMediumFamily),
+                                                      ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .bodyMediumFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .bodyMediumFamily),
+                                                      ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                    builder: (context, snapshot) {
-                                      // Customize what your widget looks like when it's loading.
-                                      if (!snapshot.hasData) {
-                                        return Center(
-                                          child: SizedBox(
-                                            width: 50.0,
-                                            height: 50.0,
-                                            child: CircularProgressIndicator(
-                                              valueColor:
-                                                  AlwaysStoppedAnimation<Color>(
-                                                FlutterFlowTheme.of(context)
-                                                    .primary,
-                                              ),
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                      List<ReviewsRecord>
-                                          containerReviewsRecordList =
-                                          snapshot.data!;
-                                      return Container(
-                                        height: 40.0,
-                                        decoration: BoxDecoration(),
-                                        child: Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  16.0, 0.0, 24.0, 12.0),
-                                          child: StreamBuilder<
-                                              List<ReviewsRecord>>(
-                                            stream: queryReviewsRecord(
-                                              queryBuilder: (reviewsRecord) =>
-                                                  reviewsRecord.where(
-                                                'propertyRef',
-                                                isEqualTo:
-                                                    listViewPropertiesRecord
-                                                        .reference,
-                                              ),
-                                              singleRecord: true,
-                                            ),
-                                            builder: (context, snapshot) {
-                                              // Customize what your widget looks like when it's loading.
-                                              if (!snapshot.hasData) {
-                                                return Center(
-                                                  child: SizedBox(
-                                                    width: 50.0,
-                                                    height: 50.0,
-                                                    child:
-                                                        CircularProgressIndicator(
-                                                      valueColor:
-                                                          AlwaysStoppedAnimation<
-                                                              Color>(
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .primary,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                );
-                                              }
-                                              List<ReviewsRecord>
-                                                  ratingBarReviewsRecordList =
-                                                  snapshot.data!;
-                                              final ratingBarReviewsRecord =
-                                                  ratingBarReviewsRecordList
-                                                          .isNotEmpty
-                                                      ? ratingBarReviewsRecordList
-                                                          .first
-                                                      : null;
-                                              return Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                children: [
-                                                  Icon(
-                                                    Icons.star_rounded,
-                                                    color: Color(0xFFFFA130),
-                                                    size: 24.0,
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(4.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      functions.ratingSummaryList(
-                                                          containerReviewsRecordList
-                                                              .toList()),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(2.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      'Rating',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              );
-                                            },
-                                          ),
-                                        ),
-                                      );
-                                    },
                                   ),
                                 ],
                               ),
@@ -721,470 +645,433 @@ class _HomePageMAINWidgetState extends State<HomePageMAINWidget>
               ],
             ),
           ),
-          Stack(
+          Align(
             alignment: AlignmentDirectional(1.0, 1.0),
-            children: [
-              Container(
-                width: double.infinity,
-                height: double.infinity,
-                decoration: BoxDecoration(),
-              ),
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 16.0, 16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10.0),
-                      child: Container(
-                        width: 200.0,
-                        decoration: BoxDecoration(
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          borderRadius: BorderRadius.circular(10.0),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 13.0, 13.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Container(
+                      width: 200.0,
+                      decoration: BoxDecoration(
+                        color: FlutterFlowTheme.of(context).primaryText,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Padding(
+                        padding:
+                            EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 8.0),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context.pushNamed('AddRoom');
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 50.0,
+                                decoration: BoxDecoration(),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20.0, 0.0, 20.0, 0.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(
+                                        Icons.home,
+                                        color: Colors.white,
+                                        size: 26.0,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '방 추가하기',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .tertiary,
+                                                fontSize: 17.0,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation2']!,
+                            ),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context.pushNamed('AnalyzeRoom');
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 50.0,
+                                decoration: BoxDecoration(),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20.0, 0.0, 20.0, 0.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(
+                                        Icons.analytics_outlined,
+                                        color: Colors.white,
+                                        size: 26.0,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '분석하기',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .tertiary,
+                                                fontSize: 17.0,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation3']!,
+                            ),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context.pushNamed(
+                                  'PrioritySetting',
+                                  extra: <String, dynamic>{
+                                    kTransitionInfoKey: TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType: PageTransitionType.fade,
+                                    ),
+                                  },
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 50.0,
+                                decoration: BoxDecoration(
+                                  color: FlutterFlowTheme.of(context).dark600,
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20.0, 0.0, 20.0, 0.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(
+                                        Icons.low_priority,
+                                        color: Colors.white,
+                                        size: 26.0,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '우선 순위 수정',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .tertiary,
+                                                fontSize: 17.0,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation4']!,
+                            ),
+                            InkWell(
+                              splashColor: Colors.transparent,
+                              focusColor: Colors.transparent,
+                              hoverColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              onTap: () async {
+                                context.pushNamed(
+                                  'ListReflectPriority',
+                                  extra: <String, dynamic>{
+                                    kTransitionInfoKey: TransitionInfo(
+                                      hasTransition: true,
+                                      transitionType: PageTransitionType.fade,
+                                    ),
+                                  },
+                                );
+                              },
+                              child: Container(
+                                width: double.infinity,
+                                height: 50.0,
+                                decoration: BoxDecoration(),
+                                child: Padding(
+                                  padding: EdgeInsetsDirectional.fromSTEB(
+                                      20.0, 0.0, 20.0, 0.0),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Icon(
+                                        Icons.checklist_sharp,
+                                        color: Colors.white,
+                                        size: 26.0,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '체크리스트 변경',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .tertiary,
+                                                fontSize: 17.0,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ).animateOnActionTrigger(
+                              animationsMap[
+                                  'containerOnActionTriggerAnimation5']!,
+                            ),
+                          ],
                         ),
-                        child: Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 8.0, 0.0, 8.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.max,
+                      ),
+                    ),
+                  ).animateOnActionTrigger(
+                    animationsMap['containerOnActionTriggerAnimation1']!,
+                  ),
+                  Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
+                    child: InkWell(
+                      splashColor: Colors.transparent,
+                      focusColor: Colors.transparent,
+                      hoverColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onTap: () async {
+                        if (FFAppState().isOptionsExpanded) {
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation1'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation1']!
+                                .controller
+                                .reverse();
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation2'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation2']!
+                                .controller
+                                .reverse();
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation3'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation3']!
+                                .controller
+                                .reverse();
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation4'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation4']!
+                                .controller
+                                .reverse();
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation5'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation5']!
+                                .controller
+                                .reverse();
+                          }
+                          if (animationsMap[
+                                  'transformOnActionTriggerAnimation'] !=
+                              null) {
+                            animationsMap['transformOnActionTriggerAnimation']!
+                                .controller
+                                .reverse();
+                          }
+                          if (animationsMap['iconOnActionTriggerAnimation'] !=
+                              null) {
+                            animationsMap['iconOnActionTriggerAnimation']!
+                                .controller
+                                .reverse();
+                          }
+                          FFAppState().isOptionsExpanded = false;
+                        } else {
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation1'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation1']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation2'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation2']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation3'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation3']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation4'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation4']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          if (animationsMap[
+                                  'containerOnActionTriggerAnimation5'] !=
+                              null) {
+                            animationsMap['containerOnActionTriggerAnimation5']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          if (animationsMap[
+                                  'transformOnActionTriggerAnimation'] !=
+                              null) {
+                            animationsMap['transformOnActionTriggerAnimation']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          if (animationsMap['iconOnActionTriggerAnimation'] !=
+                              null) {
+                            animationsMap['iconOnActionTriggerAnimation']!
+                                .controller
+                                .forward(from: 0.0);
+                          }
+                          FFAppState().isOptionsExpanded = true;
+                        }
+                      },
+                      child: ClipOval(
+                        child: Container(
+                          width: 50.0,
+                          height: 50.0,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                FlutterFlowTheme.of(context).primary,
+                                FlutterFlowTheme.of(context).secondary
+                              ],
+                              stops: [0.0, 1.0],
+                              begin: AlignmentDirectional(0.87, -1.0),
+                              end: AlignmentDirectional(-0.87, 1.0),
+                            ),
+                            shape: BoxShape.circle,
+                          ),
+                          child: Stack(
+                            alignment: AlignmentDirectional(0.0, 0.0),
                             children: [
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  context.pushNamed(
-                                    'AddRoom',
-                                    extra: <String, dynamic>{
-                                      kTransitionInfoKey: TransitionInfo(
-                                        hasTransition: true,
-                                        transitionType: PageTransitionType.fade,
-                                      ),
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 0.0, 20.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Icon(
-                                          Icons.home,
-                                          color: Colors.white,
-                                          size: 26.0,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  8.0, 0.0, 0.0, 0.0),
-                                          child: Text(
-                                            '방 추가하기',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMediumFamily,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .tertiary,
-                                                  fontSize: 17.0,
-                                                  letterSpacing: 0.0,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMediumFamily),
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                              Transform.rotate(
+                                angle: 0.0 * (math.pi / 180),
+                                child: Icon(
+                                  Icons.add_sharp,
+                                  color: Colors.white,
+                                  size: 24.0,
                                 ),
                               ).animateOnActionTrigger(
                                 animationsMap[
-                                    'containerOnActionTriggerAnimation2']!,
+                                    'transformOnActionTriggerAnimation']!,
                               ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  context.pushNamed('AnalyzeRoom');
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 0.0, 20.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Icon(
-                                          Icons.analytics_outlined,
-                                          color: Colors.white,
-                                          size: 26.0,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  8.0, 0.0, 0.0, 0.0),
-                                          child: Text(
-                                            '분석하기',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMediumFamily,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .tertiary,
-                                                  fontSize: 17.0,
-                                                  letterSpacing: 0.0,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMediumFamily),
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
+                              Icon(
+                                Icons.close_rounded,
+                                color: Colors.white,
+                                size: 24.0,
                               ).animateOnActionTrigger(
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation3']!,
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  context.pushNamed(
-                                    'ListReflectPriority',
-                                    extra: <String, dynamic>{
-                                      kTransitionInfoKey: TransitionInfo(
-                                        hasTransition: true,
-                                        transitionType: PageTransitionType.fade,
-                                      ),
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(
-                                    color: FlutterFlowTheme.of(context).dark600,
-                                  ),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 0.0, 20.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Icon(
-                                          Icons.low_priority,
-                                          color: Colors.white,
-                                          size: 26.0,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  8.0, 0.0, 0.0, 0.0),
-                                          child: Text(
-                                            '우선 순위 수정',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMediumFamily,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .tertiary,
-                                                  fontSize: 17.0,
-                                                  letterSpacing: 0.0,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMediumFamily),
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ).animateOnActionTrigger(
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation4']!,
-                              ),
-                              InkWell(
-                                splashColor: Colors.transparent,
-                                focusColor: Colors.transparent,
-                                hoverColor: Colors.transparent,
-                                highlightColor: Colors.transparent,
-                                onTap: () async {
-                                  context.pushNamed(
-                                    'PrioritySetting',
-                                    extra: <String, dynamic>{
-                                      kTransitionInfoKey: TransitionInfo(
-                                        hasTransition: true,
-                                        transitionType: PageTransitionType.fade,
-                                      ),
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  width: double.infinity,
-                                  height: 50.0,
-                                  decoration: BoxDecoration(),
-                                  child: Padding(
-                                    padding: EdgeInsetsDirectional.fromSTEB(
-                                        20.0, 0.0, 20.0, 0.0),
-                                    child: Row(
-                                      mainAxisSize: MainAxisSize.max,
-                                      children: [
-                                        Icon(
-                                          Icons.checklist_sharp,
-                                          color: Colors.white,
-                                          size: 26.0,
-                                        ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  8.0, 0.0, 0.0, 0.0),
-                                          child: Text(
-                                            '체크리스트 변경',
-                                            style: FlutterFlowTheme.of(context)
-                                                .bodyMedium
-                                                .override(
-                                                  fontFamily:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .bodyMediumFamily,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .tertiary,
-                                                  fontSize: 17.0,
-                                                  letterSpacing: 0.0,
-                                                  useGoogleFonts: GoogleFonts
-                                                          .asMap()
-                                                      .containsKey(
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMediumFamily),
-                                                ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ).animateOnActionTrigger(
-                                animationsMap[
-                                    'containerOnActionTriggerAnimation5']!,
+                                animationsMap['iconOnActionTriggerAnimation']!,
                               ),
                             ],
                           ),
                         ),
                       ),
-                    ).animateOnActionTrigger(
-                      animationsMap['containerOnActionTriggerAnimation1']!,
                     ),
-                    Padding(
-                      padding:
-                          EdgeInsetsDirectional.fromSTEB(0.0, 8.0, 0.0, 0.0),
-                      child: InkWell(
-                        splashColor: Colors.transparent,
-                        focusColor: Colors.transparent,
-                        hoverColor: Colors.transparent,
-                        highlightColor: Colors.transparent,
-                        onTap: () async {
-                          if (FFAppState().isOptionsExpanded) {
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation1'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation1']!
-                                  .controller
-                                  .reverse();
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation2'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation2']!
-                                  .controller
-                                  .reverse();
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation3'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation3']!
-                                  .controller
-                                  .reverse();
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation4'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation4']!
-                                  .controller
-                                  .reverse();
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation5'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation5']!
-                                  .controller
-                                  .reverse();
-                            }
-                            if (animationsMap[
-                                    'transformOnActionTriggerAnimation'] !=
-                                null) {
-                              animationsMap[
-                                      'transformOnActionTriggerAnimation']!
-                                  .controller
-                                  .reverse();
-                            }
-                            if (animationsMap['iconOnActionTriggerAnimation'] !=
-                                null) {
-                              animationsMap['iconOnActionTriggerAnimation']!
-                                  .controller
-                                  .reverse();
-                            }
-                            FFAppState().isOptionsExpanded = false;
-                          } else {
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation1'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation1']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation2'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation2']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation3'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation3']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation4'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation4']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            if (animationsMap[
-                                    'containerOnActionTriggerAnimation5'] !=
-                                null) {
-                              animationsMap[
-                                      'containerOnActionTriggerAnimation5']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            if (animationsMap[
-                                    'transformOnActionTriggerAnimation'] !=
-                                null) {
-                              animationsMap[
-                                      'transformOnActionTriggerAnimation']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            if (animationsMap['iconOnActionTriggerAnimation'] !=
-                                null) {
-                              animationsMap['iconOnActionTriggerAnimation']!
-                                  .controller
-                                  .forward(from: 0.0);
-                            }
-                            FFAppState().isOptionsExpanded = true;
-                          }
-                        },
-                        child: ClipOval(
-                          child: Container(
-                            width: 50.0,
-                            height: 50.0,
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [
-                                  FlutterFlowTheme.of(context).primary,
-                                  FlutterFlowTheme.of(context).secondary
-                                ],
-                                stops: [0.0, 1.0],
-                                begin: AlignmentDirectional(0.87, -1.0),
-                                end: AlignmentDirectional(-0.87, 1.0),
-                              ),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Stack(
-                              alignment: AlignmentDirectional(0.0, 0.0),
-                              children: [
-                                Transform.rotate(
-                                  angle: 0.0 * (math.pi / 180),
-                                  child: Icon(
-                                    Icons.add_sharp,
-                                    color: Colors.white,
-                                    size: 24.0,
-                                  ),
-                                ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'transformOnActionTriggerAnimation']!,
-                                ),
-                                Icon(
-                                  Icons.close_rounded,
-                                  color: Colors.white,
-                                  size: 24.0,
-                                ).animateOnActionTrigger(
-                                  animationsMap[
-                                      'iconOnActionTriggerAnimation']!,
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ],
       ),

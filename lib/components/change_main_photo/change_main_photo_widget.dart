@@ -293,10 +293,11 @@ class _ChangeMainPhotoWidgetState extends State<ChangeMainPhotoWidget>
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 32.0, 0.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    await widget.roominfo!.reference
-                        .update(createRoomInfoRecordData(
-                      roomImage: '',
-                    ));
+                    await RoomInfoRecord.collection
+                        .doc()
+                        .set(createRoomInfoRecordData(
+                          roomImage: _model.uploadedFileUrl,
+                        ));
                   },
                   text: 'Save Photo',
                   options: FFButtonOptions(

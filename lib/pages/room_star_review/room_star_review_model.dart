@@ -1,3 +1,4 @@
+import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/components/amenitity_indicator/amenitity_indicator_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -6,7 +7,7 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/flutter_flow/custom_functions.dart' as functions;
 import 'room_star_review_widget.dart' show RoomStarReviewWidget;
-import 'package:collection/collection.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -40,24 +41,71 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
 
   ///  State fields for stateful widgets in this page.
 
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomPriceRecord? priceData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomSizeRecord? sizeData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomWaterDrainageRecord? waterDrainageData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomBathroomRecord? bathroomData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomBasicOptionRecord? basicOptionData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomGarbageDisposalRecord? garbageDisposalData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomFloorRecord? floorData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomSecurityRecord? securityData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomWindowsRecord? windowsData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomCleanlinessRecord? cleanlinessData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomConvenienceRecord? convenienceData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomSoundProofingRecord? soundProofingData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomParkingAreaRecord? parkingAreaData;
+  // Stores action output result for [Backend Call - Create Document] action in IconButton widget.
+  RoomSmokingAreaRecord? smokingAreaData;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController1;
 
   // Model for amenitityIndicator component.
   late AmenitityIndicatorModel amenitityIndicatorModel1;
-  // State field(s) for JeonsaeBar widget.
-  double? jeonsaeBarValue;
-  List<RoomPriceRecord>? jeonsaeBarPreviousSnapshot;
-  // State field(s) for DepositBar widget.
-  double? depositBarValue;
-  // State field(s) for mangagmentbar widget.
-  double? mangagmentbarValue;
-  // State field(s) for ParkingBar widget.
-  double? parkingBarValue;
-  // State field(s) for InternetFeeBar widget.
-  double? internetFeeBarValue;
-  // State field(s) for ElectricFeeBar widget.
-  double? electricFeeBarValue;
+  // State field(s) for WolseTextfield widget.
+  FocusNode? wolseTextfieldFocusNode;
+  TextEditingController? wolseTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      wolseTextfieldTextControllerValidator;
+  // State field(s) for DepositTextfield widget.
+  FocusNode? depositTextfieldFocusNode;
+  TextEditingController? depositTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      depositTextfieldTextControllerValidator;
+  // State field(s) for AdminTextfield widget.
+  FocusNode? adminTextfieldFocusNode;
+  TextEditingController? adminTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      adminTextfieldTextControllerValidator;
+  // State field(s) for ParkingTextfield widget.
+  FocusNode? parkingTextfieldFocusNode;
+  TextEditingController? parkingTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      parkingTextfieldTextControllerValidator;
+  // State field(s) for InternetTextfield widget.
+  FocusNode? internetTextfieldFocusNode;
+  TextEditingController? internetTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      internetTextfieldTextControllerValidator;
+  // State field(s) for ElecAndWaterTextfield widget.
+  FocusNode? elecAndWaterTextfieldFocusNode;
+  TextEditingController? elecAndWaterTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      elecAndWaterTextfieldTextControllerValidator;
+  // State field(s) for Pricebar widget.
+  double? pricebarValue;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController2;
 
@@ -244,6 +292,24 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   void dispose() {
     expandableExpandableController1.dispose();
     amenitityIndicatorModel1.dispose();
+    wolseTextfieldFocusNode?.dispose();
+    wolseTextfieldTextController?.dispose();
+
+    depositTextfieldFocusNode?.dispose();
+    depositTextfieldTextController?.dispose();
+
+    adminTextfieldFocusNode?.dispose();
+    adminTextfieldTextController?.dispose();
+
+    parkingTextfieldFocusNode?.dispose();
+    parkingTextfieldTextController?.dispose();
+
+    internetTextfieldFocusNode?.dispose();
+    internetTextfieldTextController?.dispose();
+
+    elecAndWaterTextfieldFocusNode?.dispose();
+    elecAndWaterTextfieldTextController?.dispose();
+
     expandableExpandableController2.dispose();
     amenitityIndicatorModel2.dispose();
     expandableExpandableController3.dispose();
