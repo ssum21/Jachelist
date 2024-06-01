@@ -39,6 +39,9 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
 
     _model.expandableExpandableController1 =
         ExpandableController(initialExpanded: false);
+    _model.jeonseTextfieldTextController ??= TextEditingController();
+    _model.jeonseTextfieldFocusNode ??= FocusNode();
+
     _model.wolseTextfieldTextController ??= TextEditingController();
     _model.wolseTextfieldFocusNode ??= FocusNode();
 
@@ -54,8 +57,14 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
     _model.internetTextfieldTextController ??= TextEditingController();
     _model.internetTextfieldFocusNode ??= FocusNode();
 
-    _model.elecAndWaterTextfieldTextController ??= TextEditingController();
-    _model.elecAndWaterTextfieldFocusNode ??= FocusNode();
+    _model.elecTextfieldTextController ??= TextEditingController();
+    _model.elecTextfieldFocusNode ??= FocusNode();
+
+    _model.waterTextfieldTextController ??= TextEditingController();
+    _model.waterTextfieldFocusNode ??= FocusNode();
+
+    _model.heatingTextfieldTextController ??= TextEditingController();
+    _model.heatingTextfieldFocusNode ??= FocusNode();
 
     _model.expandableExpandableController2 =
         ExpandableController(initialExpanded: false);
@@ -148,11 +157,8 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       FFAppState().livingTypeInt,
                       0,
                     ),
-                    depositCost: valueOrDefault<double>(
-                      double.tryParse(
-                          _model.depositTextfieldTextController.text),
-                      0.0,
-                    ),
+                    depositCost: double.tryParse(
+                        _model.depositTextfieldTextController.text),
                     administrationCost: valueOrDefault<double>(
                       double.tryParse(_model.adminTextfieldTextController.text),
                       0.0,
@@ -163,11 +169,6 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       0.0,
                     ),
                     internetFeeCost: valueOrDefault<double>(
-                      double.tryParse(
-                          _model.internetTextfieldTextController.text),
-                      0.0,
-                    ),
-                    electricAndWaterFeeCost: valueOrDefault<double>(
                       double.tryParse(
                           _model.internetTextfieldTextController.text),
                       0.0,
@@ -189,13 +190,22 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                             0.0,
                           ) +
                           valueOrDefault<double>(
-                            double.tryParse(_model
-                                .elecAndWaterTextfieldTextController.text),
+                            double.tryParse(
+                                _model.elecTextfieldTextController.text),
                             0.0,
                           ),
                       0.0,
                     ),
-                    priceReview: _model.pricebarValue,
+                    priceReview: valueOrDefault<double>(
+                      _model.pricebarValue,
+                      0.0,
+                    ),
+                    electricFeeCost: double.tryParse(
+                        _model.elecTextfieldTextController.text),
+                    waterFeeCost: double.tryParse(
+                        _model.waterTextfieldTextController.text),
+                    heatingFeeCost: double.tryParse(
+                        _model.heatingTextfieldTextController.text),
                   ));
                   _model.priceData = RoomPriceRecord.getDocumentFromData(
                       createRoomPriceRecordData(
@@ -203,11 +213,8 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           FFAppState().livingTypeInt,
                           0,
                         ),
-                        depositCost: valueOrDefault<double>(
-                          double.tryParse(
-                              _model.depositTextfieldTextController.text),
-                          0.0,
-                        ),
+                        depositCost: double.tryParse(
+                            _model.depositTextfieldTextController.text),
                         administrationCost: valueOrDefault<double>(
                           double.tryParse(
                               _model.adminTextfieldTextController.text),
@@ -219,11 +226,6 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           0.0,
                         ),
                         internetFeeCost: valueOrDefault<double>(
-                          double.tryParse(
-                              _model.internetTextfieldTextController.text),
-                          0.0,
-                        ),
-                        electricAndWaterFeeCost: valueOrDefault<double>(
                           double.tryParse(
                               _model.internetTextfieldTextController.text),
                           0.0,
@@ -245,25 +247,44 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                                 0.0,
                               ) +
                               valueOrDefault<double>(
-                                double.tryParse(_model
-                                    .elecAndWaterTextfieldTextController.text),
+                                double.tryParse(
+                                    _model.elecTextfieldTextController.text),
                                 0.0,
                               ),
                           0.0,
                         ),
-                        priceReview: _model.pricebarValue,
+                        priceReview: valueOrDefault<double>(
+                          _model.pricebarValue,
+                          0.0,
+                        ),
+                        electricFeeCost: double.tryParse(
+                            _model.elecTextfieldTextController.text),
+                        waterFeeCost: double.tryParse(
+                            _model.waterTextfieldTextController.text),
+                        heatingFeeCost: double.tryParse(
+                            _model.heatingTextfieldTextController.text),
                       ),
                       roomPriceRecordReference);
                   // 1. PriceUpdate
-                  setState(() {
-                    FFAppState().addToSwitchOnOffList(FFAppState().switchPrice);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityPrice,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(_model.pricebarValue!);
-                  });
+                  FFAppState().addToSwitchOnOffList(FFAppState().switchPrice);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityPrice,
+                    4,
+                  ));
+                  FFAppState()
+                      .addToAvgReviewList(_model.priceData!.priceReview);
+                  setState(() {});
+                } else {
+                  // 1. PriceUpdate
+                  FFAppState().addToSwitchOnOffList(FFAppState().switchPrice);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityPrice,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchRoomsize) {
                   // 2. SizeData
 
@@ -319,19 +340,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       ),
                       roomSizeRecordReference);
                   // 2. SizeUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchRoomsize);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityRoomSize,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.sizeData?.avgSizeReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchRoomsize);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityRoomSize,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.sizeData?.avgSizeReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 2. SizeUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchRoomsize);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityRoomSize,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchwaterdrain) {
                   // 3. WaterDrainageData
 
@@ -395,19 +426,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomWaterDrainageRecordReference);
                   // 3. WaterDrainageUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchwaterdrain);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityWaterDrainage,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.waterDrainageData?.avgWaterDrainageReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchwaterdrain);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityWaterDrainage,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.waterDrainageData?.avgWaterDrainageReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 3. WaterDrainageUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchwaterdrain);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityWaterDrainage,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().swtichbathroom) {
                   // 4. BathroomData
 
@@ -470,19 +511,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       ),
                       roomBathroomRecordReference);
                   // 4. BathroomUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().swtichbathroom);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityBathroom,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.bathroomData?.avgRoomBathReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().swtichbathroom);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityBathroom,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.bathroomData?.avgRoomBathReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 4. BathroomUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().swtichbathroom);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityBathroom,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchBasicOption) {
                   // 5. BasicOptionData
 
@@ -546,19 +597,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomBasicOptionRecordReference);
                   // 5. BasicOptionUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchBasicOption);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityBasicOption,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.basicOptionData?.avgBasicOptionReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchBasicOption);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityBasicOption,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.basicOptionData?.avgBasicOptionReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 5. BasicOptionUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchBasicOption);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityBasicOption,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().sWitchGarbageDisposal) {
                   // 6. GarbageDisposalData
 
@@ -601,19 +662,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomGarbageDisposalRecordReference);
                   // 6. GarbageDisposalUpdate
-                  setState(() {
-                    FFAppState().addToSwitchOnOffList(
-                        FFAppState().sWitchGarbageDisposal);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityGarbageDisposal,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.garbageDisposalData?.avgGargageDisposalReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().sWitchGarbageDisposal);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityGarbageDisposal,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.garbageDisposalData?.avgGargageDisposalReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 6. GarbageDisposalUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().sWitchGarbageDisposal);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityGarbageDisposal,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchFloor) {
                   // 7. FloorData
 
@@ -662,18 +733,27 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       ),
                       roomFloorRecordReference);
                   // 7. FloorUpdate
-                  setState(() {
-                    FFAppState().addToSwitchOnOffList(FFAppState().switchFloor);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityFloor,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.floorData?.avgFloorReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState().addToSwitchOnOffList(FFAppState().switchFloor);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityFloor,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.floorData?.avgFloorReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 7. FloorUpdate
+                  FFAppState().addToSwitchOnOffList(FFAppState().switchFloor);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityFloor,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchSecurity) {
                   // 8. SecurityData
 
@@ -736,19 +816,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       ),
                       roomSecurityRecordReference);
                   // 8. SecurityUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchSecurity);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PrioritySecurity,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.securityData?.avgSecurityReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchSecurity);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PrioritySecurity,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.securityData?.avgSecurityReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 8. SecurityUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchSecurity);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PrioritySecurity,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchwindows) {
                   // 9. WindowsData
 
@@ -796,19 +886,27 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                       ),
                       roomWindowsRecordReference);
                   // 9. WindowsUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchwindows);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityWindows,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.windowsData?.avgWindowsReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState().addToSwitchOnOffList(FFAppState().switchwindows);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityWindows,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.windowsData?.avgWindowsReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 9. WindowsUpdate
+                  FFAppState().addToSwitchOnOffList(FFAppState().switchwindows);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityWindows,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchcleanliness) {
                   // 10. CleanlinessData
 
@@ -872,19 +970,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomCleanlinessRecordReference);
                   // 10. CleanlinessUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchcleanliness);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityCleaness,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.cleanlinessData?.avgCleanlinessReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchcleanliness);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityCleaness,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.cleanlinessData?.avgCleanlinessReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 10. CleanlinessUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchcleanliness);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityCleaness,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchConvenience) {
                   // 11. ConvenienceData
 
@@ -934,19 +1042,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomConvenienceRecordReference);
                   // 11. ConvenienceUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchConvenience);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityConvenience,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.convenienceData?.avgConvenienceReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchConvenience);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityConvenience,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.convenienceData?.avgConvenienceReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 11. ConvenienceUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchConvenience);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityConvenience,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchSoundproofing) {
                   // 12. SoundProofingData
 
@@ -989,19 +1107,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomSoundProofingRecordReference);
                   // 12. SoundProofingUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchSoundproofing);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PrioritySoundProofing,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.soundProofingData?.avgSoundProofingReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchSoundproofing);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PrioritySoundProofing,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.soundProofingData?.avgSoundProofingReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 12. SoundProofingUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchSoundproofing);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PrioritySoundProofing,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchParkingArea) {
                   // 13. ParkingAreaData
 
@@ -1044,19 +1172,29 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomParkingAreaRecordReference);
                   // 13. ParkingAreaUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchParkingArea);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PriorityParkingArea,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.parkingAreaData?.avgParkingAreaReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchParkingArea);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityParkingArea,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.parkingAreaData?.avgParkingAreaReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 13. ParkingAreaUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchParkingArea);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PriorityParkingArea,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 if (FFAppState().switchSmokingArea) {
                   // 14. SmokingAreaData
 
@@ -1110,26 +1248,37 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                           ),
                           roomSmokingAreaRecordReference);
                   // 14. SmokingAreaUpdate
-                  setState(() {
-                    FFAppState()
-                        .addToSwitchOnOffList(FFAppState().switchSmokingArea);
-                    FFAppState().addToPriorityLevelList(valueOrDefault<int>(
-                      FFAppState().PrioritySmokingArea,
-                      4,
-                    ));
-                    FFAppState().addToAvgReviewList(valueOrDefault<double>(
-                      _model.smokingAreaData?.avgSmokingAreaReview,
-                      0.0,
-                    ));
-                  });
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchSmokingArea);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PrioritySmokingArea,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(valueOrDefault<double>(
+                    _model.smokingAreaData?.avgSmokingAreaReview,
+                    0.0,
+                  ));
+                  setState(() {});
+                } else {
+                  // 14. SmokingAreaUpdate
+                  FFAppState()
+                      .addToSwitchOnOffList(FFAppState().switchSmokingArea);
+                  FFAppState().addToPriorityLevelList(valueOrDefault<int>(
+                    FFAppState().PrioritySmokingArea,
+                    4,
+                  ));
+                  FFAppState().addToAvgReviewList(0.0);
+                  setState(() {});
                 }
+
                 // CalculateTotalAvg
 
                 await widget.tempRoomInfoDocu!.reference
                     .update(createRoomInfoRecordData(
                   roomTotalReview: valueOrDefault<double>(
-                    functions
-                        .newCustomFunction(FFAppState().avgReviewList.toList()),
+                    functions.newCustomFunction(
+                        FFAppState().avgReviewList.toList(),
+                        FFAppState().switchOnOffList.toList()),
                     0.0,
                   ),
                   roomPriorityAvg: valueOrDefault<double>(
@@ -1140,9 +1289,14 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
                     0.0,
                   ),
                 ));
+                // ClearListValue
+                FFAppState().switchOnOffList = [];
+                FFAppState().PriorityLevelList = [];
+                FFAppState().avgReviewList = [];
+                setState(() {});
                 // NavigateToHomepage
 
-                context.pushNamed('homePage_MAIN');
+                context.pushNamed('homePage_MAINCopy');
 
                 setState(() {});
               },
@@ -1155,7853 +1309,6654 @@ class _RoomStarReviewWidgetState extends State<RoomStarReviewWidget> {
       body: SafeArea(
         top: true,
         child: Padding(
-          padding: EdgeInsetsDirectional.fromSTEB(0.0, 12.0, 0.0, 0.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
+          padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
+          child: ListView(
+            padding: EdgeInsets.zero,
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
             children: [
-              Expanded(
+              Align(
+                alignment: AlignmentDirectional(0.0, 0.0),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(16.0, 0.0, 16.0, 0.0),
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(
-                              0.0, 0.0, 0.0, 12.0),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: [
-                              Text(
-                                '자신의 평가기준에 따른 적절한 평점을 입력해주세요.',
-                                style: FlutterFlowTheme.of(context)
-                                    .bodyMedium
-                                    .override(
-                                      fontFamily: 'NotoSansKR',
-                                      color:
-                                          FlutterFlowTheme.of(context).gray600,
-                                      letterSpacing: 0.0,
-                                      fontWeight: FontWeight.w500,
-                                      useGoogleFonts: GoogleFonts.asMap()
-                                          .containsKey('NotoSansKR'),
-                                    ),
-                              ),
-                            ],
-                          ),
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 4.0, 0.0, 12.0),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: AlignmentDirectional(0.0, 0.0),
+                        child: Text(
+                          '자신의 평가기준에 따른 적절한 평점을 입력해주세요.',
+                          style:
+                              FlutterFlowTheme.of(context).bodyMedium.override(
+                                    fontFamily: 'NotoSansKR',
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                    letterSpacing: 0.0,
+                                    fontWeight: FontWeight.w500,
+                                    useGoogleFonts: GoogleFonts.asMap()
+                                        .containsKey('NotoSansKR'),
+                                  ),
                         ),
-                        ListView(
-                          padding: EdgeInsets.zero,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.vertical,
-                          children: [
-                            if (FFAppState().switchPrice)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController1,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel1,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.monetization_on,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    22.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '가격',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Price',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        valueOrDefault<String>(
-                                                          formatNumber(
-                                                            _model
-                                                                .pricebarValue,
-                                                            formatType:
-                                                                FormatType
-                                                                    .decimal,
-                                                            decimalType:
-                                                                DecimalType
-                                                                    .automatic,
-                                                          ),
-                                                          '0',
-                                                        ),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyMediumFamily),
-                                                                ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 전세 / 월세 / 매매',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    40.0, 10.0, 40.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                FFButtonWidget(
-                                                  onPressed: () async {
-                                                    if (FFAppState()
-                                                        .buttonJeonseBool) {
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .buttonJeonseBool =
-                                                            false;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .ColorButtonBorderJeonse =
-                                                            Colors.transparent;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                            .livingTypeInt = 0;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .buttonJeonseBool =
-                                                            true;
-                                                        FFAppState()
-                                                                .buttonWolseBool =
-                                                            false;
-                                                        FFAppState()
-                                                                .buttonMaeMaeBool =
-                                                            false;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .ColorButtonBorderJeonse =
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary;
-                                                        FFAppState()
-                                                                .ColorButtonBorderWolse =
-                                                            Colors.transparent;
-                                                        FFAppState()
-                                                                .ColorButtonBorderMaeMae =
-                                                            Colors.transparent;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                            .livingTypeInt = 1;
-                                                      });
-                                                    }
-                                                  },
-                                                  text: '전세',
-                                                  options: FFButtonOptions(
-                                                    height: 40.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(24.0, 0.0,
-                                                                24.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .tertiary,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmallFamily,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmallFamily),
-                                                        ),
-                                                    elevation: 3.0,
-                                                    borderSide: BorderSide(
-                                                      color: FFAppState()
-                                                          .ColorButtonBorderJeonse,
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                  ),
-                                                ),
-                                                FFButtonWidget(
-                                                  onPressed: () async {
-                                                    if (FFAppState()
-                                                        .buttonWolseBool) {
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .buttonWolseBool =
-                                                            false;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .ColorButtonBorderWolse =
-                                                            Colors.transparent;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                            .livingTypeInt = 0;
-                                                      });
-                                                      setState(() {
-                                                        _model
-                                                            .wolseTextfieldTextController
-                                                            ?.text = '0';
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .buttonWolseBool =
-                                                            true;
-                                                        FFAppState()
-                                                                .buttonJeonseBool =
-                                                            false;
-                                                        FFAppState()
-                                                                .buttonMaeMaeBool =
-                                                            false;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .ColorButtonBorderWolse =
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary;
-                                                        FFAppState()
-                                                                .ColorButtonBorderJeonse =
-                                                            Colors.transparent;
-                                                        FFAppState()
-                                                                .ColorButtonBorderMaeMae =
-                                                            Colors.transparent;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                            .livingTypeInt = 2;
-                                                      });
-                                                    }
-                                                  },
-                                                  text: '월세',
-                                                  options: FFButtonOptions(
-                                                    height: 40.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(24.0, 0.0,
-                                                                24.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .tertiary,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmallFamily,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmallFamily),
-                                                        ),
-                                                    elevation: 3.0,
-                                                    borderSide: BorderSide(
-                                                      color: FFAppState()
-                                                          .ColorButtonBorderWolse,
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                  ),
-                                                ),
-                                                FFButtonWidget(
-                                                  onPressed: () async {
-                                                    if (FFAppState()
-                                                        .buttonMaeMaeBool) {
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .buttonMaeMaeBool =
-                                                            false;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .ColorButtonBorderMaeMae =
-                                                            Colors.transparent;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                            .livingTypeInt = 0;
-                                                      });
-                                                    } else {
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .buttonWolseBool =
-                                                            false;
-                                                        FFAppState()
-                                                                .buttonJeonseBool =
-                                                            false;
-                                                        FFAppState()
-                                                                .buttonMaeMaeBool =
-                                                            true;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                                .ColorButtonBorderWolse =
-                                                            Colors.transparent;
-                                                        FFAppState()
-                                                                .ColorButtonBorderJeonse =
-                                                            Colors.transparent;
-                                                        FFAppState()
-                                                                .ColorButtonBorderMaeMae =
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .primary;
-                                                      });
-                                                      setState(() {
-                                                        FFAppState()
-                                                            .livingTypeInt = 3;
-                                                      });
-                                                    }
-                                                  },
-                                                  text: '매매',
-                                                  options: FFButtonOptions(
-                                                    height: 40.0,
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(24.0, 0.0,
-                                                                24.0, 0.0),
-                                                    iconPadding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                0.0, 0.0),
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .tertiary,
-                                                    textStyle: FlutterFlowTheme
-                                                            .of(context)
-                                                        .titleSmall
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .titleSmallFamily,
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .primaryText,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .titleSmallFamily),
-                                                        ),
-                                                    elevation: 3.0,
-                                                    borderSide: BorderSide(
-                                                      color: FFAppState()
-                                                          .ColorButtonBorderMaeMae,
-                                                      width: 2.0,
-                                                    ),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            8.0),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          if (FFAppState().buttonWolseBool)
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 5.0, 0.0, 5.0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(40.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      '1-1. 월세                ',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0x8A000000),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 17.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Expanded(
-                                                    child: Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  8.0,
-                                                                  0.0,
-                                                                  3.0,
-                                                                  0.0),
-                                                      child: TextFormField(
-                                                        controller: _model
-                                                            .wolseTextfieldTextController,
-                                                        focusNode: _model
-                                                            .wolseTextfieldFocusNode,
-                                                        autofocus: true,
-                                                        obscureText: false,
-                                                        decoration:
-                                                            InputDecoration(
-                                                          labelStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelMedium
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .labelMediumFamily,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).labelMediumFamily),
-                                                                  ),
-                                                          hintText: '금액을 입력하세요',
-                                                          hintStyle:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .labelSmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .labelSmallFamily,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            FlutterFlowTheme.of(context).labelSmallFamily),
-                                                                  ),
-                                                          enabledBorder:
-                                                              UnderlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: Color(
-                                                                  0xFF989898),
-                                                              width: 2.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4.0),
-                                                          ),
-                                                          focusedBorder:
-                                                              UnderlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .primary,
-                                                              width: 2.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4.0),
-                                                          ),
-                                                          errorBorder:
-                                                              UnderlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .error,
-                                                              width: 2.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4.0),
-                                                          ),
-                                                          focusedErrorBorder:
-                                                              UnderlineInputBorder(
-                                                            borderSide:
-                                                                BorderSide(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .error,
-                                                              width: 2.0,
-                                                            ),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        4.0),
-                                                          ),
-                                                          filled: true,
-                                                          fillColor:
-                                                              Color(0x59F2F2F2),
-                                                        ),
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyMediumFamily),
-                                                                ),
-                                                        textAlign:
-                                                            TextAlign.end,
-                                                        validator: _model
-                                                            .wolseTextfieldTextControllerValidator
-                                                            .asValidator(
-                                                                context),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(5.0, 0.0,
-                                                                10.0, 0.0),
-                                                    child: Text(
-                                                      '만 원',
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 보증금                  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                3.0, 0.0),
-                                                    child: TextFormField(
-                                                      controller: _model
-                                                          .depositTextfieldTextController,
-                                                      focusNode: _model
-                                                          .depositTextfieldFocusNode,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelMediumFamily),
-                                                                ),
-                                                        hintText: '금액을 입력하세요',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelSmall
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelSmallFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelSmallFamily),
-                                                                ),
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0xFF989898),
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Color(0x59F2F2F2),
-                                                      ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                      textAlign: TextAlign.end,
-                                                      validator: _model
-                                                          .depositTextfieldTextControllerValidator
-                                                          .asValidator(context),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          5.0, 0.0, 10.0, 0.0),
-                                                  child: Text(
-                                                    '만 원',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 관리비                  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                3.0, 0.0),
-                                                    child: TextFormField(
-                                                      controller: _model
-                                                          .adminTextfieldTextController,
-                                                      focusNode: _model
-                                                          .adminTextfieldFocusNode,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelMediumFamily),
-                                                                ),
-                                                        hintText: '금액을 입력하세요',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelSmall
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelSmallFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelSmallFamily),
-                                                                ),
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0xFF989898),
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Color(0x59F2F2F2),
-                                                      ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                      textAlign: TextAlign.end,
-                                                      validator: _model
-                                                          .adminTextfieldTextControllerValidator
-                                                          .asValidator(context),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          5.0, 0.0, 10.0, 0.0),
-                                                  child: Text(
-                                                    '만 원',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '4. 주차비                  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                3.0, 0.0),
-                                                    child: TextFormField(
-                                                      controller: _model
-                                                          .parkingTextfieldTextController,
-                                                      focusNode: _model
-                                                          .parkingTextfieldFocusNode,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelMediumFamily),
-                                                                ),
-                                                        hintText: '금액을 입력하세요',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelSmall
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelSmallFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelSmallFamily),
-                                                                ),
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0xFF989898),
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Color(0x59F2F2F2),
-                                                      ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                      textAlign: TextAlign.end,
-                                                      validator: _model
-                                                          .parkingTextfieldTextControllerValidator
-                                                          .asValidator(context),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          5.0, 0.0, 10.0, 0.0),
-                                                  child: Text(
-                                                    '만 원',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '5. 인터넷 비용          ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                3.0, 0.0),
-                                                    child: TextFormField(
-                                                      controller: _model
-                                                          .internetTextfieldTextController,
-                                                      focusNode: _model
-                                                          .internetTextfieldFocusNode,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelMediumFamily),
-                                                                ),
-                                                        hintText: '금액을 입력하세요',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelSmall
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelSmallFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelSmallFamily),
-                                                                ),
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0xFF989898),
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Color(0x59F2F2F2),
-                                                      ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                      textAlign: TextAlign.end,
-                                                      validator: _model
-                                                          .internetTextfieldTextControllerValidator
-                                                          .asValidator(context),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          5.0, 0.0, 10.0, 0.0),
-                                                  child: Text(
-                                                    '만 원',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '6. 전기세 및 수도세  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(8.0, 0.0,
-                                                                3.0, 0.0),
-                                                    child: TextFormField(
-                                                      controller: _model
-                                                          .elecAndWaterTextfieldTextController,
-                                                      focusNode: _model
-                                                          .elecAndWaterTextfieldFocusNode,
-                                                      autofocus: true,
-                                                      obscureText: false,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelMediumFamily),
-                                                                ),
-                                                        hintText: '금액을 입력하세요',
-                                                        hintStyle:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .labelSmall
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .labelSmallFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .labelSmallFamily),
-                                                                ),
-                                                        enabledBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: Color(
-                                                                0xFF989898),
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .primary,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        errorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        focusedErrorBorder:
-                                                            UnderlineInputBorder(
-                                                          borderSide:
-                                                              BorderSide(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .error,
-                                                            width: 2.0,
-                                                          ),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      4.0),
-                                                        ),
-                                                        filled: true,
-                                                        fillColor:
-                                                            Color(0x59F2F2F2),
-                                                      ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                      textAlign: TextAlign.end,
-                                                      validator: _model
-                                                          .elecAndWaterTextfieldTextControllerValidator
-                                                          .asValidator(context),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          5.0, 0.0, 10.0, 0.0),
-                                                  child: Text(
-                                                    '만 원',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 340.0,
-                                            child: Divider(
-                                              thickness: 2.0,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
-                                                      .accent4,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '* 한 달 예상 지출    ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Row(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  children: [
-                                                    Text(
-                                                      valueOrDefault<String>(
-                                                        formatNumber(
-                                                          valueOrDefault<
-                                                                  double>(
-                                                                double.tryParse(
-                                                                    _model
-                                                                        .adminTextfieldTextController
-                                                                        .text),
-                                                                0.0,
-                                                              ) +
-                                                              valueOrDefault<
-                                                                  double>(
-                                                                double.tryParse(
-                                                                    _model
-                                                                        .parkingTextfieldTextController
-                                                                        .text),
-                                                                0.0,
-                                                              ) +
-                                                              valueOrDefault<
-                                                                  double>(
-                                                                double.tryParse(
-                                                                    _model
-                                                                        .internetTextfieldTextController
-                                                                        .text),
-                                                                0.0,
-                                                              ) +
-                                                              valueOrDefault<
-                                                                  double>(
-                                                                double.tryParse(
-                                                                    _model
-                                                                        .elecAndWaterTextfieldTextController
-                                                                        .text),
-                                                                0.0,
-                                                              ) +
-                                                              valueOrDefault<
-                                                                  double>(
-                                                                double.tryParse(
-                                                                    _model
-                                                                        .wolseTextfieldTextController
-                                                                        .text),
-                                                                0.0,
-                                                              ),
-                                                          formatType: FormatType
-                                                              .decimal,
-                                                          decimalType:
-                                                              DecimalType
-                                                                  .automatic,
-                                                        ),
-                                                        '0',
-                                                      ),
-                                                      style:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .bodyMedium
-                                                              .override(
-                                                                fontFamily: FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily,
-                                                                letterSpacing:
-                                                                    0.0,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                useGoogleFonts: GoogleFonts
-                                                                        .asMap()
-                                                                    .containsKey(
-                                                                        FlutterFlowTheme.of(context)
-                                                                            .bodyMediumFamily),
-                                                              ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  5.0,
-                                                                  0.0,
-                                                                  10.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        '만 원',
-                                                        style:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMedium
-                                                                .override(
-                                                                  fontFamily: FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          FlutterFlowTheme.of(context)
-                                                                              .bodyMediumFamily),
-                                                                ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '* 총평',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          color:
-                                                              Color(0x8A000000),
-                                                          fontSize: 17.0,
-                                                          letterSpacing: 0.0,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .pricebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .pricebarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchRoomsize)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController2,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel2,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.photo_size_select_small,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '방 크기 및 구조',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Room Size',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .fourRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .roomsizebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .roomshapebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .opensepartebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .easeofFurnitureArrangementbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 방의 크기 (㎡)   ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .roomsizebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .roomsizebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.max,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  25.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        '2. 방의 형태          ',
-                                                        style: TextStyle(
-                                                          color:
-                                                              Color(0x8A000000),
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          fontSize: 17.0,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    Padding(
-                                                      padding:
-                                                          EdgeInsetsDirectional
-                                                              .fromSTEB(
-                                                                  40.0,
-                                                                  0.0,
-                                                                  0.0,
-                                                                  0.0),
-                                                      child: Text(
-                                                        '* 네모, 직사각형, L자, 복층 등',
-                                                        style: TextStyle(
-                                                          color: FlutterFlowTheme
-                                                                  .of(context)
-                                                              .redApple,
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontSize: 10.0,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .roomshapebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .roomshapebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 오픈/분리형       ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .opensepartebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .opensepartebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '4. 가구 배치 용이성',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .easeofFurnitureArrangementbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .easeofFurnitureArrangementbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchwaterdrain)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController3,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel3,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.water_drop,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '수도 및 배수',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Water Drainage',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .fourRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .waterpressurebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .warmwaterpossiblebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .drainstatebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .waterpipesatusbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 수압                  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .waterpressurebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .waterpressurebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 온수 가능여부    ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .warmwaterpossiblebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .warmwaterpossiblebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 배수구 상태       ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .drainstatebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .drainstatebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Text(
-                                                  '4. 수도관 노후 여부',
-                                                  style: TextStyle(
-                                                    color: Color(0x8A000000),
-                                                    fontWeight: FontWeight.w600,
-                                                    fontSize: 17.0,
-                                                  ),
-                                                ),
-                                                RatingBar.builder(
-                                                  onRatingUpdate: (newValue) =>
-                                                      setState(() => _model
-                                                              .waterpipesatusbarValue =
-                                                          newValue),
-                                                  itemBuilder:
-                                                      (context, index) => Icon(
-                                                    Icons.star_rounded,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .starColor,
-                                                  ),
-                                                  direction: Axis.horizontal,
-                                                  initialRating: _model
-                                                          .waterpipesatusbarValue ??=
-                                                      0.0,
-                                                  unratedColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .accent3,
-                                                  itemCount: 5,
-                                                  itemSize: 23.0,
-                                                  glowColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .starColor,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().swtichbathroom)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController4,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel4,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.bathtub_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '화장실',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Bathroom',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .fourRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .windowbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .drainsmellbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .showerboothbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .gompangyeebarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 창문 여부           ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .windowbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .windowbarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 배수구 냄새       ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .drainsmellbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .drainsmellbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 샤워 부스/욕조 여부  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .showerboothbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .showerboothbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '4. 곰팡이 여부       ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .gompangyeebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .gompangyeebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchBasicOption)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController5,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel5,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.bed,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '기본 옵션',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Basic Option',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .fourRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .refrigeratoroptionbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .washingmachineoptionsbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .gasstovebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .airconditionaloptionbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 냉장고 옵션 포함',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .refrigeratoroptionbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .refrigeratoroptionbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 세탁기 옵션 포함',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .washingmachineoptionsbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .washingmachineoptionsbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 가스레인지/인덕션    ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .gasstovebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .gasstovebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '4. 에어컨                ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .airconditionaloptionbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .airconditionaloptionbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().sWitchGarbageDisposal)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController6,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel6,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.restore_from_trash,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '쓰레기 처리',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Garbage Disposal',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .twoRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .trashlocationbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .trashsmellbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 쓰레기 배출 위치',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .trashlocationbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .trashlocationbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 악취 여부           ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .trashsmellbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .trashsmellbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchFloor)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController7,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel7,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.apartment_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '층수',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Floor',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .threeRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .floorbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .elevatorbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .stairgoodbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 건물 층수          ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .floorbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .floorbarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 엘레베이터 유무',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .elevatorbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .elevatorbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 계단 접근성       ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .stairgoodbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .stairgoodbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchSecurity)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController8,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel8,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.security_sharp,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '보안',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Security',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .fourRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .doorlockbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .cctvbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .buildentrycontolbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .policebarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 도어락 유형        ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .doorlockbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .doorlockbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. CCTV 설치 여부',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .cctvbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .cctvbarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 건물 출입 통제 여부  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .buildentrycontolbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .buildentrycontolbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '4. 주변 치안 상태   ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .policebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .policebarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchwindows)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController9,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel9,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.window_outlined,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '창문 및 조향',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Windows',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .threeRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .windownumbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .sunlightbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .windgoodbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 창문의 개수        ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .windownumbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .windownumbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 채광 여부           ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .sunlightbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .sunlightbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 환기 가능 여부    ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .windgoodbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .windgoodbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchcleanliness)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController10,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel10,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.cleaning_services,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '청결도',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Cleanliness',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .fourRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .floorstatebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .wallstatebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .kitchencleanbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .buildcleanbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          -1.0, 1.0),
-                                                  child: Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                20.0, 0.0),
-                                                    child: Column(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      25.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '1. 바닥 상태 ',
-                                                            style: TextStyle(
-                                                              color: Color(
-                                                                  0x8A000000),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              fontSize: 17.0,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      40.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '* 청소 및 얼룩, 찍힘 여부 등',
-                                                            style: TextStyle(
-                                                              color: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .redApple,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
-                                                              fontSize: 10.0,
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .floorstatebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .floorstatebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 40.0, 0.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    25.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          '2. 벽지 상태',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0x8A000000),
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 17.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    40.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          '* 얼룩, 곰팡이 여부 등',
-                                                          style: TextStyle(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .redApple,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 10.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .wallstatebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .wallstatebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 주방 청결 상태  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .kitchencleanbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .kitchencleanbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '4. 건물 청결 상태  ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .buildcleanbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .buildcleanbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchConvenience)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController11,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel11,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons
-                                                      .local_convenience_store_rounded,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '편의시설',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Convenience',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .threeRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .martbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .busbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .schoolbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 가까운 편의점 / 마트 ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .martbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .martbarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 대중교통 접근성 ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() =>
-                                                            _model.busbarValue =
-                                                                newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .busbarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '3. 학교 / 직장 거리 ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .schoolbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                        .schoolbarValue ??= 0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchSoundproofing)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController12,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel12,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.voice_over_off,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '방음',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Soundproofing',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .twoRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .wallsoundbarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .outsidesoundbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 벽의 방음상태    ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .wallsoundbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .wallsoundbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 3.0, 0.0),
-                                                  child: Column(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    25.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          '2. 외부 소음',
-                                                          style: TextStyle(
-                                                            color: Color(
-                                                                0x8A000000),
-                                                            fontWeight:
-                                                                FontWeight.w600,
-                                                            fontSize: 17.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Padding(
-                                                        padding:
-                                                            EdgeInsetsDirectional
-                                                                .fromSTEB(
-                                                                    40.0,
-                                                                    0.0,
-                                                                    0.0,
-                                                                    0.0),
-                                                        child: Text(
-                                                          '* 도로 및 주변 상가 등 주변 소음',
-                                                          style: TextStyle(
-                                                            color: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .redApple,
-                                                            fontWeight:
-                                                                FontWeight.w500,
-                                                            fontSize: 10.0,
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .outsidesoundbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .outsidesoundbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchParkingArea)
-                              Container(
-                                decoration: BoxDecoration(),
-                                child: Container(
-                                  width: double.infinity,
-                                  color: Colors.white,
-                                  child: ExpandableNotifier(
-                                    controller:
-                                        _model.expandableExpandableController13,
-                                    child: ExpandablePanel(
-                                      header: Row(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Align(
-                                            alignment:
-                                                AlignmentDirectional(0.0, 0.0),
-                                            child: wrapWithModel(
-                                              model: _model
-                                                  .amenitityIndicatorModel13,
-                                              updateCallback: () =>
-                                                  setState(() {}),
-                                              child: AmenitityIndicatorWidget(
-                                                icon: Icon(
-                                                  Icons.local_parking,
-                                                  color: FlutterFlowTheme.of(
-                                                          context)
-                                                      .gray600,
-                                                ),
-                                                background:
-                                                    FlutterFlowTheme.of(context)
-                                                        .secondaryBackground,
-                                                borderColor:
-                                                    FlutterFlowTheme.of(context)
-                                                        .lineGray,
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    20.0, 8.0, 10.0, 8.0),
-                                            child: Column(
-                                              mainAxisSize: MainAxisSize.max,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(
-                                                  '주차공간',
-                                                  textAlign: TextAlign.center,
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        fontSize: 18.0,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Text(
-                                                  'Parking Area',
-                                                  style: FlutterFlowTheme.of(
-                                                          context)
-                                                      .bodyMedium
-                                                      .override(
-                                                        fontFamily:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .bodyMediumFamily,
-                                                        letterSpacing: 0.0,
-                                                        useGoogleFonts: GoogleFonts
-                                                                .asMap()
-                                                            .containsKey(
-                                                                FlutterFlowTheme.of(
-                                                                        context)
-                                                                    .bodyMediumFamily),
-                                                      ),
-                                                ),
-                                                Align(
-                                                  alignment:
-                                                      AlignmentDirectional(
-                                                          1.0, 0.0),
-                                                  child: Row(
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Icon(
-                                                          Icons.star_rounded,
-                                                          color:
-                                                              Color(0xFFFFA130),
-                                                          size: 24.0,
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      4.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            valueOrDefault<
-                                                                String>(
-                                                              formatNumber(
-                                                                functions
-                                                                    .twoRatingSummary(
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .parkingspacebarValue,
-                                                                          0.0,
-                                                                        ),
-                                                                        valueOrDefault<
-                                                                            double>(
-                                                                          _model
-                                                                              .parkingcostbarValue,
-                                                                          0.0,
-                                                                        )),
-                                                                formatType:
-                                                                    FormatType
-                                                                        .decimal,
-                                                                decimalType:
-                                                                    DecimalType
-                                                                        .automatic,
-                                                              ),
-                                                              '0',
-                                                            ),
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                      Align(
-                                                        alignment:
-                                                            AlignmentDirectional(
-                                                                1.0, 0.0),
-                                                        child: Padding(
-                                                          padding:
-                                                              EdgeInsetsDirectional
-                                                                  .fromSTEB(
-                                                                      2.0,
-                                                                      0.0,
-                                                                      0.0,
-                                                                      0.0),
-                                                          child: Text(
-                                                            '점',
-                                                            style: FlutterFlowTheme
-                                                                    .of(context)
-                                                                .bodySmall
-                                                                .override(
-                                                                  fontFamily:
-                                                                      'Lexend Deca',
-                                                                  color: Color(
-                                                                      0xFF8B97A2),
-                                                                  fontSize:
-                                                                      12.0,
-                                                                  letterSpacing:
-                                                                      0.0,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
-                                                                  useGoogleFonts: GoogleFonts
-                                                                          .asMap()
-                                                                      .containsKey(
-                                                                          'Lexend Deca'),
-                                                                ),
-                                                          ),
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      collapsed: Container(
-                                        width:
-                                            MediaQuery.sizeOf(context).width *
-                                                1.0,
-                                        height: 0.0,
-                                        decoration: BoxDecoration(
-                                          color: FlutterFlowTheme.of(context)
-                                              .secondaryBackground,
-                                        ),
-                                      ),
-                                      expanded: Column(
-                                        mainAxisSize: MainAxisSize.max,
-                                        children: [
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 10.0, 0.0, 5.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '1. 주차 공간 유무   ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .parkingspacebarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .parkingspacebarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding:
-                                                EdgeInsetsDirectional.fromSTEB(
-                                                    0.0, 5.0, 0.0, 10.0),
-                                            child: Row(
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: [
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          25.0, 0.0, 0.0, 0.0),
-                                                  child: Text(
-                                                    '2. 주차 비용          ',
-                                                    style: TextStyle(
-                                                      color: Color(0x8A000000),
-                                                      fontWeight:
-                                                          FontWeight.w600,
-                                                      fontSize: 17.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsetsDirectional
-                                                      .fromSTEB(
-                                                          0.0, 0.0, 25.0, 0.0),
-                                                  child: RatingBar.builder(
-                                                    onRatingUpdate: (newValue) =>
-                                                        setState(() => _model
-                                                                .parkingcostbarValue =
-                                                            newValue),
-                                                    itemBuilder:
-                                                        (context, index) =>
-                                                            Icon(
-                                                      Icons.star_rounded,
-                                                      color:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                    direction: Axis.horizontal,
-                                                    initialRating: _model
-                                                            .parkingcostbarValue ??=
-                                                        0.0,
-                                                    unratedColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .accent3,
-                                                    itemCount: 5,
-                                                    itemSize: 23.0,
-                                                    glowColor:
-                                                        FlutterFlowTheme.of(
-                                                                context)
-                                                            .starColor,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      theme: ExpandableThemeData(
-                                        tapHeaderToExpand: true,
-                                        tapBodyToExpand: false,
-                                        tapBodyToCollapse: false,
-                                        headerAlignment:
-                                            ExpandablePanelHeaderAlignment
-                                                .center,
-                                        hasIcon: true,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            if (FFAppState().switchSmokingArea)
-                              Padding(
-                                padding: EdgeInsetsDirectional.fromSTEB(
-                                    0.0, 0.0, 0.0, 10.0),
-                                child: Container(
-                                  decoration: BoxDecoration(),
-                                  child: Container(
-                                    width: double.infinity,
-                                    color: Colors.white,
-                                    child: ExpandableNotifier(
-                                      controller: _model
-                                          .expandableExpandableController14,
-                                      child: ExpandablePanel(
-                                        header: Row(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Align(
-                                              alignment: AlignmentDirectional(
-                                                  0.0, 0.0),
-                                              child: wrapWithModel(
-                                                model: _model
-                                                    .amenitityIndicatorModel14,
-                                                updateCallback: () =>
-                                                    setState(() {}),
-                                                child: AmenitityIndicatorWidget(
-                                                  icon: Icon(
-                                                    Icons.smoking_rooms,
-                                                    color: FlutterFlowTheme.of(
-                                                            context)
-                                                        .gray600,
-                                                  ),
-                                                  background:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .secondaryBackground,
-                                                  borderColor:
-                                                      FlutterFlowTheme.of(
-                                                              context)
-                                                          .lineGray,
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      20.0, 8.0, 10.0, 8.0),
-                                              child: Column(
-                                                mainAxisSize: MainAxisSize.max,
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    '흡연 구역',
-                                                    textAlign: TextAlign.center,
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          fontSize: 18.0,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                  Text(
-                                                    'Smoking Area',
-                                                    style: FlutterFlowTheme.of(
-                                                            context)
-                                                        .bodyMedium
-                                                        .override(
-                                                          fontFamily:
-                                                              FlutterFlowTheme.of(
-                                                                      context)
-                                                                  .bodyMediumFamily,
-                                                          letterSpacing: 0.0,
-                                                          useGoogleFonts: GoogleFonts
-                                                                  .asMap()
-                                                              .containsKey(
-                                                                  FlutterFlowTheme.of(
-                                                                          context)
-                                                                      .bodyMediumFamily),
-                                                        ),
-                                                  ),
-                                                  Align(
-                                                    alignment:
-                                                        AlignmentDirectional(
-                                                            1.0, 0.0),
-                                                    child: Row(
-                                                      mainAxisSize:
-                                                          MainAxisSize.max,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .start,
-                                                      children: [
-                                                        Align(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  1.0, 0.0),
-                                                          child: Icon(
-                                                            Icons.star_rounded,
-                                                            color: Color(
-                                                                0xFFFFA130),
-                                                            size: 24.0,
-                                                          ),
-                                                        ),
-                                                        Align(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  1.0, 0.0),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        4.0,
-                                                                        0.0,
-                                                                        0.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              valueOrDefault<
-                                                                  String>(
-                                                                formatNumber(
-                                                                  functions.threeRatingSummary(
-                                                                      valueOrDefault<double>(
-                                                                        _model
-                                                                            .smokingspacebarValue,
-                                                                        0.0,
-                                                                      ),
-                                                                      valueOrDefault<double>(
-                                                                        _model
-                                                                            .smokinglocationbarValue,
-                                                                        0.0,
-                                                                      ),
-                                                                      valueOrDefault<double>(
-                                                                        _model
-                                                                            .smokingareacleanessbarValue,
-                                                                        0.0,
-                                                                      )),
-                                                                  formatType:
-                                                                      FormatType
-                                                                          .decimal,
-                                                                  decimalType:
-                                                                      DecimalType
-                                                                          .automatic,
-                                                                ),
-                                                                '0',
-                                                              ),
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodySmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Lexend Deca',
-                                                                    color: Color(
-                                                                        0xFF8B97A2),
-                                                                    fontSize:
-                                                                        12.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            'Lexend Deca'),
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                        Align(
-                                                          alignment:
-                                                              AlignmentDirectional(
-                                                                  1.0, 0.0),
-                                                          child: Padding(
-                                                            padding:
-                                                                EdgeInsetsDirectional
-                                                                    .fromSTEB(
-                                                                        2.0,
-                                                                        0.0,
-                                                                        0.0,
-                                                                        0.0),
-                                                            child: Text(
-                                                              '점',
-                                                              style: FlutterFlowTheme
-                                                                      .of(context)
-                                                                  .bodySmall
-                                                                  .override(
-                                                                    fontFamily:
-                                                                        'Lexend Deca',
-                                                                    color: Color(
-                                                                        0xFF8B97A2),
-                                                                    fontSize:
-                                                                        12.0,
-                                                                    letterSpacing:
-                                                                        0.0,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
-                                                                    useGoogleFonts: GoogleFonts
-                                                                            .asMap()
-                                                                        .containsKey(
-                                                                            'Lexend Deca'),
-                                                                  ),
-                                                            ),
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        collapsed: Container(
-                                          width:
-                                              MediaQuery.sizeOf(context).width *
-                                                  1.0,
-                                          height: 0.0,
-                                          decoration: BoxDecoration(
-                                            color: FlutterFlowTheme.of(context)
-                                                .secondaryBackground,
-                                          ),
-                                        ),
-                                        expanded: Column(
-                                          mainAxisSize: MainAxisSize.max,
-                                          children: [
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 10.0, 0.0, 5.0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(25.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      '1. 흡연 구역 유무   ',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0x8A000000),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 17.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                25.0, 0.0),
-                                                    child: RatingBar.builder(
-                                                      onRatingUpdate: (newValue) =>
-                                                          setState(() => _model
-                                                                  .smokingspacebarValue =
-                                                              newValue),
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Icon(
-                                                        Icons.star_rounded,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .starColor,
-                                                      ),
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      initialRating: _model
-                                                              .smokingspacebarValue ??=
-                                                          0.0,
-                                                      unratedColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent3,
-                                                      itemCount: 5,
-                                                      itemSize: 23.0,
-                                                      glowColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(0.0, 5.0, 0.0, 5.0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(25.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      '2. 흡연 구역 위치  ',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0x8A000000),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 17.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                25.0, 0.0),
-                                                    child: RatingBar.builder(
-                                                      onRatingUpdate: (newValue) =>
-                                                          setState(() => _model
-                                                                  .smokinglocationbarValue =
-                                                              newValue),
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Icon(
-                                                        Icons.star_rounded,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .starColor,
-                                                      ),
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      initialRating: _model
-                                                              .smokinglocationbarValue ??=
-                                                          0.0,
-                                                      unratedColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent3,
-                                                      itemCount: 5,
-                                                      itemSize: 23.0,
-                                                      glowColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: EdgeInsetsDirectional
-                                                  .fromSTEB(
-                                                      0.0, 5.0, 0.0, 10.0),
-                                              child: Row(
-                                                mainAxisSize: MainAxisSize.max,
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(25.0, 0.0,
-                                                                0.0, 0.0),
-                                                    child: Text(
-                                                      '3. 흡연 구역 청결 상태  ',
-                                                      style: TextStyle(
-                                                        color:
-                                                            Color(0x8A000000),
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 17.0,
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Padding(
-                                                    padding:
-                                                        EdgeInsetsDirectional
-                                                            .fromSTEB(0.0, 0.0,
-                                                                25.0, 0.0),
-                                                    child: RatingBar.builder(
-                                                      onRatingUpdate: (newValue) =>
-                                                          setState(() => _model
-                                                                  .smokingareacleanessbarValue =
-                                                              newValue),
-                                                      itemBuilder:
-                                                          (context, index) =>
-                                                              Icon(
-                                                        Icons.star_rounded,
-                                                        color:
-                                                            FlutterFlowTheme.of(
-                                                                    context)
-                                                                .starColor,
-                                                      ),
-                                                      direction:
-                                                          Axis.horizontal,
-                                                      initialRating: _model
-                                                              .smokingareacleanessbarValue ??=
-                                                          0.0,
-                                                      unratedColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .accent3,
-                                                      itemCount: 5,
-                                                      itemSize: 23.0,
-                                                      glowColor:
-                                                          FlutterFlowTheme.of(
-                                                                  context)
-                                                              .starColor,
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        theme: ExpandableThemeData(
-                                          tapHeaderToExpand: true,
-                                          tapBodyToExpand: false,
-                                          tapBodyToCollapse: false,
-                                          headerAlignment:
-                                              ExpandablePanelHeaderAlignment
-                                                  .center,
-                                          hasIcon: true,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
+              if (FFAppState().switchPrice)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController1,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel1,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.monetization_on,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  22.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '가격',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Price',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Text(
+                                          valueOrDefault<String>(
+                                            _model.pricebarValue?.toString(),
+                                            '0',
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 전세 / 월세 / 매매',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  40.0, 10.0, 40.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  FFButtonWidget(
+                                    onPressed: () async {
+                                      if (FFAppState().buttonJeonseBool) {
+                                        FFAppState().buttonJeonseBool = false;
+                                        setState(() {});
+                                        FFAppState().ColorButtonBorderJeonse =
+                                            Colors.transparent;
+                                        setState(() {});
+                                        FFAppState().livingTypeInt = 0;
+                                        setState(() {});
+                                        setState(() {
+                                          _model.jeonseTextfieldTextController
+                                              ?.text = '0';
+                                        });
+                                      } else {
+                                        FFAppState().buttonJeonseBool = true;
+                                        FFAppState().buttonWolseBool = false;
+                                        FFAppState().buttonMaeMaeBool = false;
+                                        setState(() {});
+                                        FFAppState().ColorButtonBorderJeonse =
+                                            FlutterFlowTheme.of(context)
+                                                .primary;
+                                        FFAppState().ColorButtonBorderWolse =
+                                            Colors.transparent;
+                                        FFAppState().ColorButtonBorderMaeMae =
+                                            Colors.transparent;
+                                        setState(() {});
+                                        FFAppState().livingTypeInt = 1;
+                                        setState(() {});
+                                      }
+                                    },
+                                    text: '전세',
+                                    options: FFButtonOptions(
+                                      height: 40.0,
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 0.0, 24.0, 0.0),
+                                      iconPadding:
+                                          EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 0.0),
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmallFamily,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmallFamily),
+                                          ),
+                                      elevation: 3.0,
+                                      borderSide: BorderSide(
+                                        color: FFAppState()
+                                            .ColorButtonBorderJeonse,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  FFButtonWidget(
+                                    onPressed: () async {
+                                      if (FFAppState().buttonWolseBool) {
+                                        FFAppState().buttonWolseBool = false;
+                                        setState(() {});
+                                        FFAppState().ColorButtonBorderWolse =
+                                            Colors.transparent;
+                                        setState(() {});
+                                        FFAppState().livingTypeInt = 0;
+                                        setState(() {});
+                                        setState(() {
+                                          _model.wolseTextfieldTextController
+                                              ?.text = '0';
+                                        });
+                                        setState(() {
+                                          _model.depositTextfieldTextController
+                                              ?.text = '0';
+                                        });
+                                      } else {
+                                        FFAppState().buttonWolseBool = true;
+                                        FFAppState().buttonJeonseBool = false;
+                                        FFAppState().buttonMaeMaeBool = false;
+                                        setState(() {});
+                                        FFAppState().ColorButtonBorderWolse =
+                                            FlutterFlowTheme.of(context)
+                                                .primary;
+                                        FFAppState().ColorButtonBorderJeonse =
+                                            Colors.transparent;
+                                        FFAppState().ColorButtonBorderMaeMae =
+                                            Colors.transparent;
+                                        setState(() {});
+                                        FFAppState().livingTypeInt = 2;
+                                        setState(() {});
+                                      }
+                                    },
+                                    text: '월세',
+                                    options: FFButtonOptions(
+                                      height: 40.0,
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 0.0, 24.0, 0.0),
+                                      iconPadding:
+                                          EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 0.0),
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmallFamily,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmallFamily),
+                                          ),
+                                      elevation: 3.0,
+                                      borderSide: BorderSide(
+                                        color:
+                                            FFAppState().ColorButtonBorderWolse,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                  FFButtonWidget(
+                                    onPressed: () async {
+                                      if (FFAppState().buttonMaeMaeBool) {
+                                        FFAppState().buttonMaeMaeBool = false;
+                                        setState(() {});
+                                        FFAppState().ColorButtonBorderMaeMae =
+                                            Colors.transparent;
+                                        setState(() {});
+                                        FFAppState().livingTypeInt = 0;
+                                        setState(() {});
+                                      } else {
+                                        FFAppState().buttonWolseBool = false;
+                                        FFAppState().buttonJeonseBool = false;
+                                        FFAppState().buttonMaeMaeBool = true;
+                                        setState(() {});
+                                        FFAppState().ColorButtonBorderWolse =
+                                            Colors.transparent;
+                                        FFAppState().ColorButtonBorderJeonse =
+                                            Colors.transparent;
+                                        FFAppState().ColorButtonBorderMaeMae =
+                                            FlutterFlowTheme.of(context)
+                                                .primary;
+                                        setState(() {});
+                                        FFAppState().livingTypeInt = 3;
+                                        setState(() {});
+                                      }
+                                    },
+                                    text: '매매',
+                                    options: FFButtonOptions(
+                                      height: 40.0,
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          24.0, 0.0, 24.0, 0.0),
+                                      iconPadding:
+                                          EdgeInsetsDirectional.fromSTEB(
+                                              0.0, 0.0, 0.0, 0.0),
+                                      color:
+                                          FlutterFlowTheme.of(context).tertiary,
+                                      textStyle: FlutterFlowTheme.of(context)
+                                          .titleSmall
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .titleSmallFamily,
+                                            color: FlutterFlowTheme.of(context)
+                                                .primaryText,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .titleSmallFamily),
+                                          ),
+                                      elevation: 3.0,
+                                      borderSide: BorderSide(
+                                        color: FFAppState()
+                                            .ColorButtonBorderMaeMae,
+                                        width: 2.0,
+                                      ),
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (FFAppState().buttonJeonseBool)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 5.0, 0.0, 5.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          40.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        '1-1. 전세                   ',
+                                        style: TextStyle(
+                                          color: Color(0x8A000000),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 3.0, 0.0),
+                                        child: Container(
+                                          width: 100.0,
+                                          child: TextFormField(
+                                            controller: _model
+                                                .jeonseTextfieldTextController,
+                                            focusNode:
+                                                _model.jeonseTextfieldFocusNode,
+                                            autofocus: true,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelMediumFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelMediumFamily),
+                                                      ),
+                                              hintText: '금액을 입력하세요',
+                                              hintStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelSmall
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelSmallFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelSmallFamily),
+                                                      ),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0xFF989898),
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              errorBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .error,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              focusedErrorBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .error,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Color(0x59F2F2F2),
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily,
+                                                  letterSpacing: 0.0,
+                                                  useGoogleFonts: GoogleFonts
+                                                          .asMap()
+                                                      .containsKey(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMediumFamily),
+                                                ),
+                                            textAlign: TextAlign.end,
+                                            validator: _model
+                                                .jeonseTextfieldTextControllerValidator
+                                                .asValidator(context),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          5.0, 0.0, 10.0, 0.0),
+                                      child: Text(
+                                        '만 원',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily,
+                                              letterSpacing: 0.0,
+                                              useGoogleFonts: GoogleFonts
+                                                      .asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            if (FFAppState().buttonWolseBool)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 5.0, 0.0, 5.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          40.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        '1-1. 월세                   ',
+                                        style: TextStyle(
+                                          color: Color(0x8A000000),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 3.0, 0.0),
+                                        child: Container(
+                                          width: 100.0,
+                                          child: TextFormField(
+                                            controller: _model
+                                                .wolseTextfieldTextController,
+                                            focusNode:
+                                                _model.wolseTextfieldFocusNode,
+                                            autofocus: true,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelMediumFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelMediumFamily),
+                                                      ),
+                                              hintText: '금액을 입력하세요',
+                                              hintStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelSmall
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelSmallFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelSmallFamily),
+                                                      ),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0xFF989898),
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              errorBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .error,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              focusedErrorBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .error,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Color(0x59F2F2F2),
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily,
+                                                  letterSpacing: 0.0,
+                                                  useGoogleFonts: GoogleFonts
+                                                          .asMap()
+                                                      .containsKey(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMediumFamily),
+                                                ),
+                                            textAlign: TextAlign.end,
+                                            validator: _model
+                                                .wolseTextfieldTextControllerValidator
+                                                .asValidator(context),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          5.0, 0.0, 10.0, 0.0),
+                                      child: Text(
+                                        '만 원',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily,
+                                              letterSpacing: 0.0,
+                                              useGoogleFonts: GoogleFonts
+                                                      .asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            if (FFAppState().buttonWolseBool)
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 5.0, 0.0, 5.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          40.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        '1-2. 보증금               ',
+                                        style: TextStyle(
+                                          color: Color(0x8A000000),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            8.0, 0.0, 3.0, 0.0),
+                                        child: Container(
+                                          width: 100.0,
+                                          child: TextFormField(
+                                            controller: _model
+                                                .depositTextfieldTextController,
+                                            focusNode: _model
+                                                .depositTextfieldFocusNode,
+                                            autofocus: true,
+                                            obscureText: false,
+                                            decoration: InputDecoration(
+                                              labelStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelMedium
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelMediumFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelMediumFamily),
+                                                      ),
+                                              hintText: '금액을 입력하세요',
+                                              hintStyle:
+                                                  FlutterFlowTheme.of(context)
+                                                      .labelSmall
+                                                      .override(
+                                                        fontFamily:
+                                                            FlutterFlowTheme.of(
+                                                                    context)
+                                                                .labelSmallFamily,
+                                                        letterSpacing: 0.0,
+                                                        useGoogleFonts: GoogleFonts
+                                                                .asMap()
+                                                            .containsKey(
+                                                                FlutterFlowTheme.of(
+                                                                        context)
+                                                                    .labelSmallFamily),
+                                                      ),
+                                              enabledBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: Color(0xFF989898),
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              focusedBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .primary,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              errorBorder: UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .error,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              focusedErrorBorder:
+                                                  UnderlineInputBorder(
+                                                borderSide: BorderSide(
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .error,
+                                                  width: 2.0,
+                                                ),
+                                                borderRadius:
+                                                    BorderRadius.circular(4.0),
+                                              ),
+                                              filled: true,
+                                              fillColor: Color(0x59F2F2F2),
+                                            ),
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily:
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily,
+                                                  letterSpacing: 0.0,
+                                                  useGoogleFonts: GoogleFonts
+                                                          .asMap()
+                                                      .containsKey(
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .bodyMediumFamily),
+                                                ),
+                                            textAlign: TextAlign.end,
+                                            validator: _model
+                                                .depositTextfieldTextControllerValidator
+                                                .asValidator(context),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          5.0, 0.0, 10.0, 0.0),
+                                      child: Text(
+                                        '만 원',
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily,
+                                              letterSpacing: 0.0,
+                                              useGoogleFonts: GoogleFonts
+                                                      .asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 관리비                     ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 3.0, 0.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        child: TextFormField(
+                                          controller: _model
+                                              .adminTextfieldTextController,
+                                          focusNode:
+                                              _model.adminTextfieldFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelMediumFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily),
+                                                    ),
+                                            hintText: '금액을 입력하세요',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelSmall
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelSmallFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelSmallFamily),
+                                                    ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF989898),
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Color(0x59F2F2F2),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                          textAlign: TextAlign.end,
+                                          validator: _model
+                                              .adminTextfieldTextControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5.0, 0.0, 10.0, 0.0),
+                                    child: Text(
+                                      '만 원',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 주차비                     ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 3.0, 0.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        child: TextFormField(
+                                          controller: _model
+                                              .parkingTextfieldTextController,
+                                          focusNode:
+                                              _model.parkingTextfieldFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelMediumFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily),
+                                                    ),
+                                            hintText: '금액을 입력하세요',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelSmall
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelSmallFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelSmallFamily),
+                                                    ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF989898),
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Color(0x59F2F2F2),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                          textAlign: TextAlign.end,
+                                          validator: _model
+                                              .parkingTextfieldTextControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5.0, 0.0, 10.0, 0.0),
+                                    child: Text(
+                                      '만 원',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 인터넷 비용             ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 3.0, 0.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        child: TextFormField(
+                                          controller: _model
+                                              .internetTextfieldTextController,
+                                          focusNode:
+                                              _model.internetTextfieldFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelMediumFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily),
+                                                    ),
+                                            hintText: '금액을 입력하세요',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelSmall
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelSmallFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelSmallFamily),
+                                                    ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF989898),
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Color(0x59F2F2F2),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                          textAlign: TextAlign.end,
+                                          validator: _model
+                                              .internetTextfieldTextControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5.0, 0.0, 10.0, 0.0),
+                                    child: Text(
+                                      '만 원',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '5. 전기세                     ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 3.0, 0.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        child: TextFormField(
+                                          controller: _model
+                                              .elecTextfieldTextController,
+                                          focusNode:
+                                              _model.elecTextfieldFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelMediumFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily),
+                                                    ),
+                                            hintText: '금액을 입력하세요',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelSmall
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelSmallFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelSmallFamily),
+                                                    ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF989898),
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Color(0x59F2F2F2),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                          textAlign: TextAlign.end,
+                                          validator: _model
+                                              .elecTextfieldTextControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5.0, 0.0, 10.0, 0.0),
+                                    child: Text(
+                                      '만 원',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '6. 수도세                     ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 3.0, 0.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        child: TextFormField(
+                                          controller: _model
+                                              .waterTextfieldTextController,
+                                          focusNode:
+                                              _model.waterTextfieldFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelMediumFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily),
+                                                    ),
+                                            hintText: '금액을 입력하세요',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelSmall
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelSmallFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelSmallFamily),
+                                                    ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF989898),
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Color(0x59F2F2F2),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                          textAlign: TextAlign.end,
+                                          validator: _model
+                                              .waterTextfieldTextControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5.0, 0.0, 10.0, 0.0),
+                                    child: Text(
+                                      '만 원',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '7. 난방비                     ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          8.0, 0.0, 3.0, 0.0),
+                                      child: Container(
+                                        width: 100.0,
+                                        child: TextFormField(
+                                          controller: _model
+                                              .heatingTextfieldTextController,
+                                          focusNode:
+                                              _model.heatingTextfieldFocusNode,
+                                          autofocus: true,
+                                          obscureText: false,
+                                          decoration: InputDecoration(
+                                            labelStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelMedium
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelMediumFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelMediumFamily),
+                                                    ),
+                                            hintText: '금액을 입력하세요',
+                                            hintStyle:
+                                                FlutterFlowTheme.of(context)
+                                                    .labelSmall
+                                                    .override(
+                                                      fontFamily:
+                                                          FlutterFlowTheme.of(
+                                                                  context)
+                                                              .labelSmallFamily,
+                                                      letterSpacing: 0.0,
+                                                      useGoogleFonts: GoogleFonts
+                                                              .asMap()
+                                                          .containsKey(
+                                                              FlutterFlowTheme.of(
+                                                                      context)
+                                                                  .labelSmallFamily),
+                                                    ),
+                                            enabledBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color: Color(0xFF989898),
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .primary,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            errorBorder: UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            focusedErrorBorder:
+                                                UnderlineInputBorder(
+                                              borderSide: BorderSide(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .error,
+                                                width: 2.0,
+                                              ),
+                                              borderRadius:
+                                                  BorderRadius.circular(4.0),
+                                            ),
+                                            filled: true,
+                                            fillColor: Color(0x59F2F2F2),
+                                          ),
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                          textAlign: TextAlign.end,
+                                          validator: _model
+                                              .heatingTextfieldTextControllerValidator
+                                              .asValidator(context),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        5.0, 0.0, 10.0, 0.0),
+                                    child: Text(
+                                      '만 원',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(
+                              width: 340.0,
+                              child: Divider(
+                                thickness: 2.0,
+                                color: FlutterFlowTheme.of(context).accent4,
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '* 한 달 예상 지출    ',
+                                          style: TextStyle(
+                                            color: Color(0x8A000000),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 17.0,
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment:
+                                            AlignmentDirectional(0.0, 0.0),
+                                        child: Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  40.0, 3.0, 0.0, 0.0),
+                                          child: Text(
+                                            '* 현행 주택임대차보호법에 따른 \n   전월세 전환율 5.5%가 반영된 값입니다. ',
+                                            textAlign: TextAlign.start,
+                                            style: FlutterFlowTheme.of(context)
+                                                .bodyMedium
+                                                .override(
+                                                  fontFamily: 'NotoSansKR',
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
+                                                      .redApple,
+                                                  fontSize: 10.0,
+                                                  letterSpacing: 0.0,
+                                                  fontWeight: FontWeight.w500,
+                                                  useGoogleFonts:
+                                                      GoogleFonts.asMap()
+                                                          .containsKey(
+                                                              'NotoSansKR'),
+                                                ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    children: [
+                                      Text(
+                                        valueOrDefault<String>(
+                                          formatNumber(
+                                            valueOrDefault<double>(
+                                                  () {
+                                                    if (FFAppState()
+                                                        .buttonJeonseBool) {
+                                                      return valueOrDefault<
+                                                          double>(
+                                                        valueOrDefault<double>(
+                                                              double.tryParse(_model
+                                                                  .jeonseTextfieldTextController
+                                                                  .text),
+                                                              0.0,
+                                                            ) *
+                                                            5.5 /
+                                                            100 /
+                                                            12,
+                                                        0.0,
+                                                      );
+                                                    } else if (FFAppState()
+                                                        .buttonWolseBool) {
+                                                      return valueOrDefault<
+                                                          double>(
+                                                        valueOrDefault<double>(
+                                                              double.tryParse(_model
+                                                                  .wolseTextfieldTextController
+                                                                  .text),
+                                                              0.0,
+                                                            ) +
+                                                            (valueOrDefault<
+                                                                    double>(
+                                                                  double.tryParse(
+                                                                      _model
+                                                                          .depositTextfieldTextController
+                                                                          .text),
+                                                                  0.0,
+                                                                ) *
+                                                                5.5 /
+                                                                100 /
+                                                                12),
+                                                        0.0,
+                                                      );
+                                                    } else {
+                                                      return 0.0;
+                                                    }
+                                                  }(),
+                                                  0.0,
+                                                ) +
+                                                valueOrDefault<double>(
+                                                  double.tryParse(_model
+                                                      .adminTextfieldTextController
+                                                      .text),
+                                                  0.0,
+                                                ) +
+                                                valueOrDefault<double>(
+                                                  double.tryParse(_model
+                                                      .parkingTextfieldTextController
+                                                      .text),
+                                                  0.0,
+                                                ) +
+                                                valueOrDefault<double>(
+                                                  double.tryParse(_model
+                                                      .internetTextfieldTextController
+                                                      .text),
+                                                  0.0,
+                                                ) +
+                                                valueOrDefault<double>(
+                                                  double.tryParse(_model
+                                                      .elecTextfieldTextController
+                                                      .text),
+                                                  0.0,
+                                                ) +
+                                                valueOrDefault<double>(
+                                                  double.tryParse(_model
+                                                      .waterTextfieldTextController
+                                                      .text),
+                                                  0.0,
+                                                ) +
+                                                valueOrDefault<double>(
+                                                  double.tryParse(_model
+                                                      .heatingTextfieldTextController
+                                                      .text),
+                                                  0.0,
+                                                ),
+                                            formatType: FormatType.custom,
+                                            format: '#,##0.#',
+                                            locale: '',
+                                          ),
+                                          '0',
+                                        ),
+                                        style: FlutterFlowTheme.of(context)
+                                            .bodyMedium
+                                            .override(
+                                              fontFamily:
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily,
+                                              letterSpacing: 0.0,
+                                              fontWeight: FontWeight.bold,
+                                              useGoogleFonts: GoogleFonts
+                                                      .asMap()
+                                                  .containsKey(
+                                                      FlutterFlowTheme.of(
+                                                              context)
+                                                          .bodyMediumFamily),
+                                            ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            5.0, 0.0, 10.0, 0.0),
+                                        child: Text(
+                                          '만 원',
+                                          style: FlutterFlowTheme.of(context)
+                                              .bodyMedium
+                                              .override(
+                                                fontFamily:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily,
+                                                letterSpacing: 0.0,
+                                                useGoogleFonts: GoogleFonts
+                                                        .asMap()
+                                                    .containsKey(
+                                                        FlutterFlowTheme.of(
+                                                                context)
+                                                            .bodyMediumFamily),
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '* 총평',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            color: Color(0x8A000000),
+                                            fontSize: 17.0,
+                                            letterSpacing: 0.0,
+                                            fontWeight: FontWeight.w600,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.pricebarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.pricebarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchRoomsize)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController2,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel2,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.photo_size_select_small,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '방 크기 및 구조',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Room Size',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.fourRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model.roomsizebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .roomshapebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .opensepartebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .easeofFurnitureArrangementbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 방의 크기 (㎡)   ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.roomsizebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.roomsizebarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    mainAxisSize: MainAxisSize.max,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            25.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '2. 방의 형태          ',
+                                          style: TextStyle(
+                                            color: Color(0x8A000000),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 17.0,
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsetsDirectional.fromSTEB(
+                                            40.0, 0.0, 0.0, 0.0),
+                                        child: Text(
+                                          '* 네모, 직사각형, L자, 복층 등',
+                                          style: TextStyle(
+                                            color: FlutterFlowTheme.of(context)
+                                                .redApple,
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10.0,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.roomshapebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.roomshapebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 오픈/분리형       ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.opensepartebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.opensepartebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 가구 배치 용이성',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(() =>
+                                          _model.easeofFurnitureArrangementbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model
+                                              .easeofFurnitureArrangementbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchwaterdrain)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController3,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel3,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.water_drop,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '수도 및 배수',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Water Drainage',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.fourRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .waterpressurebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .warmwaterpossiblebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .drainstatebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .waterpipesatusbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 수압                  ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.waterpressurebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.waterpressurebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 온수 가능여부    ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.warmwaterpossiblebarValue =
+                                                  newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model
+                                          .warmwaterpossiblebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 배수구 상태       ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.drainstatebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.drainstatebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 수도관 노후 여부',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.waterpipesatusbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.waterpipesatusbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().swtichbathroom)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController4,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel4,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.bathtub_rounded,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '화장실',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Bathroom',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.fourRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model.windowbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .drainsmellbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .showerboothbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .gompangyeebarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 창문 여부           ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.windowbarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.windowbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 배수구 냄새       ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.drainsmellbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.drainsmellbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 샤워 부스/욕조 여부  ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.showerboothbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.showerboothbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 곰팡이 여부       ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.gompangyeebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.gompangyeebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchBasicOption)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController5,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel5,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.bed,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '기본 옵션',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Basic Option',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.fourRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .refrigeratoroptionbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .washingmachineoptionsbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.gasstovebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .airconditionaloptionbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 냉장고 옵션 포함',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model
+                                                  .refrigeratoroptionbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model
+                                          .refrigeratoroptionbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 세탁기 옵션 포함',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(() =>
+                                          _model.washingmachineoptionsbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model
+                                              .washingmachineoptionsbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 가스레인지/인덕션    ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.gasstovebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.gasstovebarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 에어컨                ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model
+                                                  .airconditionaloptionbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model
+                                          .airconditionaloptionbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().sWitchGarbageDisposal)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController6,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel6,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.restore_from_trash,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '쓰레기 처리',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Garbage Disposal',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.twoRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .trashlocationbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .trashsmellbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 쓰레기 배출 위치',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.trashlocationbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.trashlocationbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 악취 여부           ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.trashsmellbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.trashsmellbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchFloor)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController7,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel7,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.apartment_rounded,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '층수',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Floor',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.threeRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model.floorbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.elevatorbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .stairgoodbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 건물 층수          ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.floorbarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.floorbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 엘레베이터 유무',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.elevatorbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.elevatorbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 계단 접근성       ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.stairgoodbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.stairgoodbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchSecurity)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController8,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel8,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.security_sharp,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '보안',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Security',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.fourRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model.doorlockbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.cctvbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .buildentrycontolbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.policebarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 도어락 유형        ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.doorlockbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.doorlockbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. CCTV 설치 여부',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.cctvbarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.cctvbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 건물 출입 통제 여부  ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.buildentrycontolbarValue =
+                                                  newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model
+                                          .buildentrycontolbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 주변 치안 상태   ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.policebarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.policebarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchwindows)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController9,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel9,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.window_outlined,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '창문 및 조향',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Windows',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.threeRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .windownumbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.sunlightbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.windgoodbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 창문의 개수        ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.windownumbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.windownumbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 채광 여부           ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.sunlightbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.sunlightbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 환기 가능 여부    ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.windgoodbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.windgoodbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchcleanliness)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController10,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel10,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.cleaning_services,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '청결도',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Cleanliness',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.fourRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .floorstatebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .wallstatebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .kitchencleanbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .buildcleanbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Align(
+                                    alignment: AlignmentDirectional(-1.0, 1.0),
+                                    child: Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 20.0, 0.0),
+                                      child: Column(
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    25.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '1. 바닥 상태 ',
+                                              style: TextStyle(
+                                                color: Color(0x8A000000),
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 17.0,
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    40.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '* 청소 및 얼룩, 찍힘 여부 등',
+                                              style: TextStyle(
+                                                color:
+                                                    FlutterFlowTheme.of(context)
+                                                        .redApple,
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 10.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.floorstatebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.floorstatebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 40.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  25.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            '2. 벽지 상태',
+                                            style: TextStyle(
+                                              color: Color(0x8A000000),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  40.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            '* 얼룩, 곰팡이 여부 등',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .redApple,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 10.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.wallstatebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.wallstatebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 주방 청결 상태  ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.kitchencleanbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.kitchencleanbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '4. 건물 청결 상태  ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.buildcleanbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.buildcleanbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchConvenience)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController11,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel11,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.local_convenience_store_rounded,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '편의시설',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Convenience',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.threeRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model.martbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.busbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model.schoolbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 가까운 편의점 / 마트 ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.martbarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.martbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 대중교통 접근성 ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.busbarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.busbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '3. 학교 / 직장 거리 ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () =>
+                                              _model.schoolbarValue = newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating: _model.schoolbarValue ??=
+                                          0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchSoundproofing)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController12,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel12,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.voice_over_off,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '방음',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Soundproofing',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.twoRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .wallsoundbarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .outsidesoundbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 벽의 방음상태    ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.wallsoundbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.wallsoundbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 3.0, 0.0),
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.max,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  25.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            '2. 외부 소음',
+                                            style: TextStyle(
+                                              color: Color(0x8A000000),
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 17.0,
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding:
+                                              EdgeInsetsDirectional.fromSTEB(
+                                                  40.0, 0.0, 0.0, 0.0),
+                                          child: Text(
+                                            '* 도로 및 주변 상가 등 주변 소음',
+                                            style: TextStyle(
+                                              color:
+                                                  FlutterFlowTheme.of(context)
+                                                      .redApple,
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 10.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.outsidesoundbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.outsidesoundbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchParkingArea)
+                Container(
+                  decoration: BoxDecoration(),
+                  child: Container(
+                    width: double.infinity,
+                    color: Colors.white,
+                    child: ExpandableNotifier(
+                      controller: _model.expandableExpandableController13,
+                      child: ExpandablePanel(
+                        header: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Align(
+                              alignment: AlignmentDirectional(0.0, 0.0),
+                              child: wrapWithModel(
+                                model: _model.amenitityIndicatorModel13,
+                                updateCallback: () => setState(() {}),
+                                child: AmenitityIndicatorWidget(
+                                  icon: Icon(
+                                    Icons.local_parking,
+                                    color: FlutterFlowTheme.of(context).gray600,
+                                  ),
+                                  background: FlutterFlowTheme.of(context)
+                                      .secondaryBackground,
+                                  borderColor:
+                                      FlutterFlowTheme.of(context).lineGray,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  20.0, 8.0, 10.0, 8.0),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    '주차공간',
+                                    textAlign: TextAlign.center,
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          fontSize: 18.0,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Text(
+                                    'Parking Area',
+                                    style: FlutterFlowTheme.of(context)
+                                        .bodyMedium
+                                        .override(
+                                          fontFamily:
+                                              FlutterFlowTheme.of(context)
+                                                  .bodyMediumFamily,
+                                          letterSpacing: 0.0,
+                                          useGoogleFonts: GoogleFonts.asMap()
+                                              .containsKey(
+                                                  FlutterFlowTheme.of(context)
+                                                      .bodyMediumFamily),
+                                        ),
+                                  ),
+                                  Align(
+                                    alignment: AlignmentDirectional(1.0, 0.0),
+                                    child: Row(
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Icon(
+                                            Icons.star_rounded,
+                                            color: Color(0xFFFFA130),
+                                            size: 24.0,
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    4.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              valueOrDefault<String>(
+                                                formatNumber(
+                                                  functions.twoRatingSummary(
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .parkingspacebarValue,
+                                                        0.0,
+                                                      ),
+                                                      valueOrDefault<double>(
+                                                        _model
+                                                            .parkingcostbarValue,
+                                                        0.0,
+                                                      )),
+                                                  formatType: FormatType.custom,
+                                                  format: '0.0#',
+                                                  locale: '',
+                                                ),
+                                                '0',
+                                              ),
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                        Align(
+                                          alignment:
+                                              AlignmentDirectional(1.0, 0.0),
+                                          child: Padding(
+                                            padding:
+                                                EdgeInsetsDirectional.fromSTEB(
+                                                    2.0, 0.0, 0.0, 0.0),
+                                            child: Text(
+                                              '점',
+                                              style: FlutterFlowTheme.of(
+                                                      context)
+                                                  .bodySmall
+                                                  .override(
+                                                    fontFamily: 'Lexend Deca',
+                                                    color: Color(0xFF8B97A2),
+                                                    fontSize: 12.0,
+                                                    letterSpacing: 0.0,
+                                                    fontWeight:
+                                                        FontWeight.normal,
+                                                    useGoogleFonts:
+                                                        GoogleFonts.asMap()
+                                                            .containsKey(
+                                                                'Lexend Deca'),
+                                                  ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        collapsed: Container(
+                          width: MediaQuery.sizeOf(context).width * 1.0,
+                          height: 0.0,
+                          decoration: BoxDecoration(
+                            color: FlutterFlowTheme.of(context)
+                                .secondaryBackground,
+                          ),
+                        ),
+                        expanded: Column(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 10.0, 0.0, 5.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '1. 주차 공간 유무   ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.parkingspacebarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.parkingspacebarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsetsDirectional.fromSTEB(
+                                  0.0, 5.0, 0.0, 10.0),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        25.0, 0.0, 0.0, 0.0),
+                                    child: Text(
+                                      '2. 주차 비용          ',
+                                      style: TextStyle(
+                                        color: Color(0x8A000000),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 17.0,
+                                      ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsetsDirectional.fromSTEB(
+                                        0.0, 0.0, 25.0, 0.0),
+                                    child: RatingBar.builder(
+                                      onRatingUpdate: (newValue) => setState(
+                                          () => _model.parkingcostbarValue =
+                                              newValue),
+                                      itemBuilder: (context, index) => Icon(
+                                        Icons.star_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                      direction: Axis.horizontal,
+                                      initialRating:
+                                          _model.parkingcostbarValue ??= 0.0,
+                                      unratedColor:
+                                          FlutterFlowTheme.of(context).accent3,
+                                      itemCount: 5,
+                                      itemSize: 23.0,
+                                      glowColor: FlutterFlowTheme.of(context)
+                                          .starColor,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        theme: ExpandableThemeData(
+                          tapHeaderToExpand: true,
+                          tapBodyToExpand: false,
+                          tapBodyToCollapse: false,
+                          headerAlignment:
+                              ExpandablePanelHeaderAlignment.center,
+                          hasIcon: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              if (FFAppState().switchSmokingArea)
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 10.0),
+                  child: Container(
+                    decoration: BoxDecoration(),
+                    child: Container(
+                      width: double.infinity,
+                      color: Colors.white,
+                      child: ExpandableNotifier(
+                        controller: _model.expandableExpandableController14,
+                        child: ExpandablePanel(
+                          header: Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Align(
+                                alignment: AlignmentDirectional(0.0, 0.0),
+                                child: wrapWithModel(
+                                  model: _model.amenitityIndicatorModel14,
+                                  updateCallback: () => setState(() {}),
+                                  child: AmenitityIndicatorWidget(
+                                    icon: Icon(
+                                      Icons.smoking_rooms,
+                                      color:
+                                          FlutterFlowTheme.of(context).gray600,
+                                    ),
+                                    background: FlutterFlowTheme.of(context)
+                                        .secondaryBackground,
+                                    borderColor:
+                                        FlutterFlowTheme.of(context).lineGray,
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    20.0, 8.0, 10.0, 8.0),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      '흡연 구역',
+                                      textAlign: TextAlign.center,
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            fontSize: 18.0,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                    Text(
+                                      'Smoking Area',
+                                      style: FlutterFlowTheme.of(context)
+                                          .bodyMedium
+                                          .override(
+                                            fontFamily:
+                                                FlutterFlowTheme.of(context)
+                                                    .bodyMediumFamily,
+                                            letterSpacing: 0.0,
+                                            useGoogleFonts: GoogleFonts.asMap()
+                                                .containsKey(
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMediumFamily),
+                                          ),
+                                    ),
+                                    Align(
+                                      alignment: AlignmentDirectional(1.0, 0.0),
+                                      child: Row(
+                                        mainAxisSize: MainAxisSize.max,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(1.0, 0.0),
+                                            child: Icon(
+                                              Icons.star_rounded,
+                                              color: Color(0xFFFFA130),
+                                              size: 24.0,
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(1.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(4.0, 0.0, 0.0, 0.0),
+                                              child: Text(
+                                                valueOrDefault<String>(
+                                                  formatNumber(
+                                                    functions
+                                                        .threeRatingSummary(
+                                                            valueOrDefault<
+                                                                double>(
+                                                              _model
+                                                                  .smokingspacebarValue,
+                                                              0.0,
+                                                            ),
+                                                            valueOrDefault<
+                                                                double>(
+                                                              _model
+                                                                  .smokinglocationbarValue,
+                                                              0.0,
+                                                            ),
+                                                            valueOrDefault<
+                                                                double>(
+                                                              _model
+                                                                  .smokingareacleanessbarValue,
+                                                              0.0,
+                                                            )),
+                                                    formatType:
+                                                        FormatType.custom,
+                                                    format: '0.0#',
+                                                    locale: '',
+                                                  ),
+                                                  '0',
+                                                ),
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color: Color(0xFF8B97A2),
+                                                      fontSize: 12.0,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      useGoogleFonts:
+                                                          GoogleFonts.asMap()
+                                                              .containsKey(
+                                                                  'Lexend Deca'),
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                          Align(
+                                            alignment:
+                                                AlignmentDirectional(1.0, 0.0),
+                                            child: Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(2.0, 0.0, 0.0, 0.0),
+                                              child: Text(
+                                                '점',
+                                                style: FlutterFlowTheme.of(
+                                                        context)
+                                                    .bodySmall
+                                                    .override(
+                                                      fontFamily: 'Lexend Deca',
+                                                      color: Color(0xFF8B97A2),
+                                                      fontSize: 12.0,
+                                                      letterSpacing: 0.0,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                      useGoogleFonts:
+                                                          GoogleFonts.asMap()
+                                                              .containsKey(
+                                                                  'Lexend Deca'),
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          collapsed: Container(
+                            width: MediaQuery.sizeOf(context).width * 1.0,
+                            height: 0.0,
+                            decoration: BoxDecoration(
+                              color: FlutterFlowTheme.of(context)
+                                  .secondaryBackground,
+                            ),
+                          ),
+                          expanded: Column(
+                            mainAxisSize: MainAxisSize.max,
+                            children: [
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 10.0, 0.0, 5.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          25.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        '1. 흡연 구역 유무   ',
+                                        style: TextStyle(
+                                          color: Color(0x8A000000),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 25.0, 0.0),
+                                      child: RatingBar.builder(
+                                        onRatingUpdate: (newValue) => setState(
+                                            () => _model.smokingspacebarValue =
+                                                newValue),
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .starColor,
+                                        ),
+                                        direction: Axis.horizontal,
+                                        initialRating:
+                                            _model.smokingspacebarValue ??= 0.0,
+                                        unratedColor:
+                                            FlutterFlowTheme.of(context)
+                                                .accent3,
+                                        itemCount: 5,
+                                        itemSize: 23.0,
+                                        glowColor: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 5.0, 0.0, 5.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          25.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        '2. 흡연 구역 위치  ',
+                                        style: TextStyle(
+                                          color: Color(0x8A000000),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 25.0, 0.0),
+                                      child: RatingBar.builder(
+                                        onRatingUpdate: (newValue) => setState(
+                                            () =>
+                                                _model.smokinglocationbarValue =
+                                                    newValue),
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .starColor,
+                                        ),
+                                        direction: Axis.horizontal,
+                                        initialRating: _model
+                                            .smokinglocationbarValue ??= 0.0,
+                                        unratedColor:
+                                            FlutterFlowTheme.of(context)
+                                                .accent3,
+                                        itemCount: 5,
+                                        itemSize: 23.0,
+                                        glowColor: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsetsDirectional.fromSTEB(
+                                    0.0, 5.0, 0.0, 10.0),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          25.0, 0.0, 0.0, 0.0),
+                                      child: Text(
+                                        '3. 흡연 구역 청결 상태  ',
+                                        style: TextStyle(
+                                          color: Color(0x8A000000),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 17.0,
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: EdgeInsetsDirectional.fromSTEB(
+                                          0.0, 0.0, 25.0, 0.0),
+                                      child: RatingBar.builder(
+                                        onRatingUpdate: (newValue) => setState(
+                                            () => _model
+                                                    .smokingareacleanessbarValue =
+                                                newValue),
+                                        itemBuilder: (context, index) => Icon(
+                                          Icons.star_rounded,
+                                          color: FlutterFlowTheme.of(context)
+                                              .starColor,
+                                        ),
+                                        direction: Axis.horizontal,
+                                        initialRating: _model
+                                                .smokingareacleanessbarValue ??=
+                                            0.0,
+                                        unratedColor:
+                                            FlutterFlowTheme.of(context)
+                                                .accent3,
+                                        itemCount: 5,
+                                        itemSize: 23.0,
+                                        glowColor: FlutterFlowTheme.of(context)
+                                            .starColor,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          theme: ExpandableThemeData(
+                            tapHeaderToExpand: true,
+                            tapBodyToExpand: false,
+                            tapBodyToCollapse: false,
+                            headerAlignment:
+                                ExpandablePanelHeaderAlignment.center,
+                            hasIcon: true,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
             ],
           ),
         ),

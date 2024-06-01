@@ -227,6 +227,9 @@ class FFAppState extends ChangeNotifier {
       _switchSecurity = prefs.getBool('ff_switchSecurity') ?? _switchSecurity;
     });
     _safeInit(() {
+      _switchwindows = prefs.getBool('ff_switchwindows') ?? _switchwindows;
+    });
+    _safeInit(() {
       _switchcleanliness =
           prefs.getBool('ff_switchcleanliness') ?? _switchcleanliness;
     });
@@ -614,6 +617,7 @@ class FFAppState extends ChangeNotifier {
   bool get switchwindows => _switchwindows;
   set switchwindows(bool _value) {
     _switchwindows = _value;
+    prefs.setBool('ff_switchwindows', _value);
   }
 
   bool _switchcleanliness = true;
@@ -784,6 +788,12 @@ class FFAppState extends ChangeNotifier {
 
   void insertAtIndexInAvgReviewList(int _index, double _value) {
     _avgReviewList.insert(_index, _value);
+  }
+
+  bool _optionVisibility = false;
+  bool get optionVisibility => _optionVisibility;
+  set optionVisibility(bool _value) {
+    _optionVisibility = _value;
   }
 }
 

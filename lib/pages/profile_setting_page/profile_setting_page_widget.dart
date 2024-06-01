@@ -861,7 +861,7 @@ class _ProfileSettingPageWidgetState extends State<ProfileSettingPageWidget>
                     await authManager.signOut();
                     GoRouter.of(context).clearRedirectLocation();
 
-                    context.goNamedAuth('homePage_MAIN', context.mounted);
+                    context.goNamedAuth('homePage_MAINCopy', context.mounted);
                   },
                   text: 'Reference',
                   options: FFButtonOptions(

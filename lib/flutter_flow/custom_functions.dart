@@ -114,7 +114,8 @@ double newCustomFunction2(
       l_level = priorityLevel.length,
       l_review = avgReview.length;
   int iter_n = 0;
-  List<double> result = [];
+  double review_sum = 0.0;
+  double count = 0.0;
 
   // list 길이가 모두 같으면 동작
   if ((l_bool == l_level) && (l_level == l_review) && (l_review > 0)) {
@@ -141,15 +142,15 @@ double newCustomFunction2(
 
         double review = avgReview[i];
         for (int j = 0; j < iter_n; ++j) {
-          result.add(review);
+          review_sum += review;
+          count += 1;
+          ;
         } // for 구문
       } // if 구문
     } // for 구문
 
-    if (result.isNotEmpty) {
-      double sum = result.reduce((value, element) => value + element);
-      double avg = sum / result.length;
-      return avg;
+    if (count > 0) {
+      return review_sum / count;
     } else {
       return 0;
     } // if-else 구문
@@ -158,15 +159,25 @@ double newCustomFunction2(
   } // if-else 구문
 }
 
-double newCustomFunction(List<double> avgReviewList) {
-  int list_length = avgReviewList.length;
+double newCustomFunction(
+  List<double> avgReviewList,
+  List<bool>? onOff,
+) {
+  int listLength = avgReviewList.length;
+  int count = 0;
   double result = 0.0;
 
-  if (list_length > 0) {
-    double sum = avgReviewList.reduce((value, element) => value + element);
-    result = sum / list_length;
-    return result;
-  } else {
-    return 0.0;
+  if (onOff != null && listLength == onOff.length) {
+    for (int i = 0; i < listLength; ++i) {
+      if (onOff[i]) {
+        result += avgReviewList[i];
+        count++;
+      }
+    }
+    if (count > 0) {
+      return result / count;
+    }
   }
+
+  return 0.0;
 }

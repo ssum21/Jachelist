@@ -193,7 +193,7 @@ class LightModeTheme extends FlutterFlowTheme {
   late Color lineGray = Color(0xFFE1EDF9);
   late Color starColor = Color(0xFFFFA130);
   late Color prioirtyFirst = Color(0xFFC33AF0);
-  late Color prioritySecond = Color(0xFF873AF0);
+  late Color prioritySecond = Color(0xFFEBAFE5);
   late Color priorityThrid = Color(0xFF4C3AF0);
 }
 

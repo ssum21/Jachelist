@@ -74,6 +74,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
 
   // Model for amenitityIndicator component.
   late AmenitityIndicatorModel amenitityIndicatorModel1;
+  // State field(s) for JeonseTextfield widget.
+  FocusNode? jeonseTextfieldFocusNode;
+  TextEditingController? jeonseTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      jeonseTextfieldTextControllerValidator;
   // State field(s) for WolseTextfield widget.
   FocusNode? wolseTextfieldFocusNode;
   TextEditingController? wolseTextfieldTextController;
@@ -99,11 +104,20 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   TextEditingController? internetTextfieldTextController;
   String? Function(BuildContext, String?)?
       internetTextfieldTextControllerValidator;
-  // State field(s) for ElecAndWaterTextfield widget.
-  FocusNode? elecAndWaterTextfieldFocusNode;
-  TextEditingController? elecAndWaterTextfieldTextController;
+  // State field(s) for ElecTextfield widget.
+  FocusNode? elecTextfieldFocusNode;
+  TextEditingController? elecTextfieldTextController;
+  String? Function(BuildContext, String?)? elecTextfieldTextControllerValidator;
+  // State field(s) for WaterTextfield widget.
+  FocusNode? waterTextfieldFocusNode;
+  TextEditingController? waterTextfieldTextController;
   String? Function(BuildContext, String?)?
-      elecAndWaterTextfieldTextControllerValidator;
+      waterTextfieldTextControllerValidator;
+  // State field(s) for HeatingTextfield widget.
+  FocusNode? heatingTextfieldFocusNode;
+  TextEditingController? heatingTextfieldTextController;
+  String? Function(BuildContext, String?)?
+      heatingTextfieldTextControllerValidator;
   // State field(s) for Pricebar widget.
   double? pricebarValue;
   // State field(s) for Expandable widget.
@@ -292,6 +306,9 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   void dispose() {
     expandableExpandableController1.dispose();
     amenitityIndicatorModel1.dispose();
+    jeonseTextfieldFocusNode?.dispose();
+    jeonseTextfieldTextController?.dispose();
+
     wolseTextfieldFocusNode?.dispose();
     wolseTextfieldTextController?.dispose();
 
@@ -307,8 +324,14 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
     internetTextfieldFocusNode?.dispose();
     internetTextfieldTextController?.dispose();
 
-    elecAndWaterTextfieldFocusNode?.dispose();
-    elecAndWaterTextfieldTextController?.dispose();
+    elecTextfieldFocusNode?.dispose();
+    elecTextfieldTextController?.dispose();
+
+    waterTextfieldFocusNode?.dispose();
+    waterTextfieldTextController?.dispose();
+
+    heatingTextfieldFocusNode?.dispose();
+    heatingTextfieldTextController?.dispose();
 
     expandableExpandableController2.dispose();
     amenitityIndicatorModel2.dispose();

@@ -105,7 +105,7 @@ class NavBarPage extends StatefulWidget {
 
 /// This is the private State class that goes with NavBarPage.
 class _NavBarPageState extends State<NavBarPage> {
-  String _currentPageName = 'homePage_MAIN';
+  String _currentPageName = 'homePage_MAINCopy';
   late Widget? _currentPage;
 
   @override
@@ -118,7 +118,8 @@ class _NavBarPageState extends State<NavBarPage> {
   @override
   Widget build(BuildContext context) {
     final tabs = {
-      'homePage_MAIN': HomePageMAINWidget(),
+      'PrioritySetting': PrioritySettingWidget(),
+      'homePage_MAINCopy': HomePageMAINCopyWidget(),
       'profileSettingPage': ProfileSettingPageWidget(),
     };
     final currentIndex = tabs.keys.toList().indexOf(_currentPageName);
@@ -138,6 +139,13 @@ class _NavBarPageState extends State<NavBarPage> {
         showUnselectedLabels: false,
         type: BottomNavigationBarType.fixed,
         items: <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.low_priority,
+            ),
+            label: '우선순위 설정',
+            tooltip: '',
+          ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.home_outlined,

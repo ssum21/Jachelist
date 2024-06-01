@@ -128,49 +128,37 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                       highlightColor: Colors.transparent,
                       onTap: () async {
                         if (FFAppState().PriorityPrice == 3) {
-                          setState(() {
-                            FFAppState().ColorIconPrice =
-                                FlutterFlowTheme.of(context).prioritySecond;
-                          });
-                          setState(() {
-                            FFAppState().StringPriorityPrice = '중요';
-                          });
-                          setState(() {
-                            FFAppState().PriorityPrice = 2;
-                          });
+                          FFAppState().ColorIconPrice =
+                              FlutterFlowTheme.of(context).prioritySecond;
+                          setState(() {});
+                          FFAppState().StringPriorityPrice = '중요';
+                          setState(() {});
+                          FFAppState().PriorityPrice = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityPrice == 1) {
-                          setState(() {
-                            FFAppState().ColorIconPrice =
-                                FlutterFlowTheme.of(context).secondaryText;
-                          });
-                          setState(() {
-                            FFAppState().StringPriorityPrice = '중요하지 않음';
-                          });
-                          setState(() {
-                            FFAppState().PriorityPrice = 4;
-                          });
+                          FFAppState().ColorIconPrice =
+                              FlutterFlowTheme.of(context).secondaryText;
+                          setState(() {});
+                          FFAppState().StringPriorityPrice = '중요하지 않음';
+                          setState(() {});
+                          FFAppState().PriorityPrice = 4;
+                          setState(() {});
                         } else if (FFAppState().PriorityPrice == 2) {
-                          setState(() {
-                            FFAppState().ColorIconPrice =
-                                FlutterFlowTheme.of(context).prioirtyFirst;
-                          });
-                          setState(() {
-                            FFAppState().StringPriorityPrice = '매우 중요';
-                          });
-                          setState(() {
-                            FFAppState().PriorityPrice = 1;
-                          });
+                          FFAppState().ColorIconPrice =
+                              FlutterFlowTheme.of(context).prioirtyFirst;
+                          setState(() {});
+                          FFAppState().StringPriorityPrice = '매우 중요';
+                          setState(() {});
+                          FFAppState().PriorityPrice = 1;
+                          setState(() {});
                         } else {
-                          setState(() {
-                            FFAppState().ColorIconPrice =
-                                FlutterFlowTheme.of(context).priorityThrid;
-                          });
-                          setState(() {
-                            FFAppState().StringPriorityPrice = '중요하지 않음';
-                          });
-                          setState(() {
-                            FFAppState().PriorityPrice = 3;
-                          });
+                          FFAppState().ColorIconPrice =
+                              FlutterFlowTheme.of(context).priorityThrid;
+                          setState(() {});
+                          FFAppState().StringPriorityPrice = '보통';
+                          setState(() {});
+                          FFAppState().PriorityPrice = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -218,8 +206,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState().ColorIconPrice,
+                                        color: () {
+                                          if (FFAppState().PriorityPrice == 1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityPrice ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityPrice ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
+                                        fontWeight: FontWeight.w500,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
                                                 FlutterFlowTheme.of(context)
@@ -242,30 +249,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconRoomSize =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityRoomSize = '중요';
-                          setState(() {
-                            FFAppState().PriorityRoomSize = 2;
-                          });
+                          FFAppState().PriorityRoomSize = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityRoomSize == 1) {
                           FFAppState().ColorIconRoomSize =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityRoomSize = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityRoomSize = 4;
-                          });
+                          FFAppState().PriorityRoomSize = 4;
+                          setState(() {});
                         } else if (FFAppState().PriorityRoomSize == 2) {
                           FFAppState().ColorIconRoomSize =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityRoomSize = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityRoomSize = 1;
-                          });
+                          FFAppState().PriorityRoomSize = 1;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconRoomSize =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityRoomSize = '보통';
-                          setState(() {
-                            FFAppState().PriorityRoomSize = 3;
-                          });
+                          FFAppState().PriorityRoomSize = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -312,7 +315,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState().ColorIconRoomSize,
+                                        color: () {
+                                          if (FFAppState().PriorityRoomSize ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityRoomSize ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityRoomSize ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -348,30 +370,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconWaterDrainage =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityWaterDrainage = '중요';
-                          setState(() {
-                            FFAppState().PriorityWaterDrainage = 2;
-                          });
+                          FFAppState().PriorityWaterDrainage = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityWaterDrainage == 1) {
                           FFAppState().ColorIconWaterDrainage =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityWaterDrainage = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityWaterDrainage = 4;
-                          });
+                          FFAppState().PriorityWaterDrainage = 4;
+                          setState(() {});
                         } else if (FFAppState().PriorityWaterDrainage == 2) {
                           FFAppState().ColorIconWaterDrainage =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityWaterDrainage = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityWaterDrainage = 1;
-                          });
+                          FFAppState().PriorityWaterDrainage = 1;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconWaterDrainage =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityWaterDrainage = '보통';
-                          setState(() {
-                            FFAppState().PriorityWaterDrainage = 3;
-                          });
+                          FFAppState().PriorityWaterDrainage = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -418,8 +436,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconWaterDrainage,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PriorityWaterDrainage ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityWaterDrainage ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityWaterDrainage ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -443,30 +480,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconBathroom =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityBathroom = '중요';
-                          setState(() {
-                            FFAppState().PriorityBathroom = 2;
-                          });
+                          FFAppState().PriorityBathroom = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityBathroom == 2) {
                           FFAppState().ColorIconBathroom =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityBathroom = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityBathroom = 1;
-                          });
+                          FFAppState().PriorityBathroom = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityBathroom == 1) {
                           FFAppState().ColorIconBathroom =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityBathroom = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityBathroom = 4;
-                          });
+                          FFAppState().PriorityBathroom = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconBathroom =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityBathroom = '보통';
-                          setState(() {
-                            FFAppState().PriorityBathroom = 3;
-                          });
+                          FFAppState().PriorityBathroom = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -513,7 +546,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState().ColorIconBathroom,
+                                        color: () {
+                                          if (FFAppState().PriorityBathroom ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityBathroom ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityBathroom ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -549,30 +601,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconBasicOption =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityBasicOption = '중요';
-                          setState(() {
-                            FFAppState().PriorityBasicOption = 2;
-                          });
+                          FFAppState().PriorityBasicOption = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityBasicOption == 2) {
                           FFAppState().ColorIconBasicOption =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityBasicOption = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityBasicOption = 1;
-                          });
+                          FFAppState().PriorityBasicOption = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityBasicOption == 1) {
                           FFAppState().ColorIconBasicOption =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityBasicOption = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityBasicOption = 4;
-                          });
+                          FFAppState().PriorityBasicOption = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconBasicOption =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityBasicOption = '보통';
-                          setState(() {
-                            FFAppState().PriorityBasicOption = 3;
-                          });
+                          FFAppState().PriorityBasicOption = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -621,8 +669,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconBasicOption,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PriorityBasicOption ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityBasicOption ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityBasicOption ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -646,31 +713,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconGarbageDisposal =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityGarbageDisPosal = '중요';
-                          setState(() {
-                            FFAppState().PriorityGarbageDisposal = 2;
-                          });
+                          FFAppState().PriorityGarbageDisposal = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityGarbageDisposal == 2) {
                           FFAppState().ColorIconGarbageDisposal =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityGarbageDisPosal = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityGarbageDisposal = 1;
-                          });
+                          FFAppState().PriorityGarbageDisposal = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityGarbageDisposal == 1) {
                           FFAppState().ColorIconGarbageDisposal =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityGarbageDisPosal =
                               '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityGarbageDisposal = 4;
-                          });
+                          FFAppState().PriorityGarbageDisposal = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconGarbageDisposal =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityGarbageDisPosal = '보통';
-                          setState(() {
-                            FFAppState().PriorityGarbageDisposal = 3;
-                          });
+                          FFAppState().PriorityGarbageDisposal = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -719,8 +782,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState()
-                                            .ColorIconGarbageDisposal,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PriorityGarbageDisposal ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityGarbageDisposal ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityGarbageDisposal ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -756,30 +838,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconFloor =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityFloor = '중요';
-                          setState(() {
-                            FFAppState().PriorityFloor = 2;
-                          });
+                          FFAppState().PriorityFloor = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityFloor == 2) {
                           FFAppState().ColorIconFloor =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityFloor = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityFloor = 1;
-                          });
+                          FFAppState().PriorityFloor = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityFloor == 1) {
                           FFAppState().ColorIconFloor =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityFloor = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityFloor = 4;
-                          });
+                          FFAppState().PriorityFloor = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconFloor =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityFloor = '보통';
-                          setState(() {
-                            FFAppState().PriorityFloor = 3;
-                          });
+                          FFAppState().PriorityFloor = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -828,7 +906,25 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState().ColorIconFloor,
+                                        color: () {
+                                          if (FFAppState().PriorityFloor == 1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityFloor ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityFloor ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -852,30 +948,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColoriconSecurity =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPrioritySecurity = '중요';
-                          setState(() {
-                            FFAppState().PrioritySecurity = 2;
-                          });
+                          FFAppState().PrioritySecurity = 2;
+                          setState(() {});
                         } else if (FFAppState().PrioritySecurity == 2) {
                           FFAppState().ColoriconSecurity =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPrioritySecurity = '매우 중요';
-                          setState(() {
-                            FFAppState().PrioritySecurity = 1;
-                          });
+                          FFAppState().PrioritySecurity = 1;
+                          setState(() {});
                         } else if (FFAppState().PrioritySecurity == 1) {
                           FFAppState().ColoriconSecurity =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPrioritySecurity = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PrioritySecurity = 4;
-                          });
+                          FFAppState().PrioritySecurity = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColoriconSecurity =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPrioritySecurity = '보통';
-                          setState(() {
-                            FFAppState().PrioritySecurity = 3;
-                          });
+                          FFAppState().PrioritySecurity = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -924,7 +1016,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState().ColoriconSecurity,
+                                        color: () {
+                                          if (FFAppState().PrioritySecurity ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PrioritySecurity ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PrioritySecurity ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -960,30 +1071,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconWindows =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityWindows = '중요';
-                          setState(() {
-                            FFAppState().PriorityWindows = 2;
-                          });
+                          FFAppState().PriorityWindows = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityWindows == 2) {
                           FFAppState().ColorIconWindows =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityWindows = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityWindows = 1;
-                          });
-                        } else if (FFAppState().PrioritySecurity == 1) {
+                          FFAppState().PriorityWindows = 1;
+                          setState(() {});
+                        } else if (FFAppState().PriorityWindows == 1) {
                           FFAppState().ColorIconWindows =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityWindows = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityWindows = 4;
-                          });
+                          FFAppState().PriorityWindows = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconWindows =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityWindows = '보통';
-                          setState(() {
-                            FFAppState().PriorityWindows = 3;
-                          });
+                          FFAppState().PriorityWindows = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -1032,7 +1139,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color: FFAppState().ColorIconWindows,
+                                        color: () {
+                                          if (FFAppState().PriorityWindows ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityWindows ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityWindows ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -1056,30 +1182,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconCleanliness =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityCleaness = '중요';
-                          setState(() {
-                            FFAppState().PriorityCleaness = 2;
-                          });
+                          FFAppState().PriorityCleaness = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityCleaness == 2) {
                           FFAppState().ColorIconCleanliness =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityCleaness = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityCleaness = 1;
-                          });
+                          FFAppState().PriorityCleaness = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityCleaness == 1) {
                           FFAppState().ColorIconCleanliness =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityCleaness = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityCleaness = 4;
-                          });
+                          FFAppState().PriorityCleaness = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconCleanliness =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityCleaness = '보통';
-                          setState(() {
-                            FFAppState().PriorityCleaness = 3;
-                          });
+                          FFAppState().PriorityCleaness = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -1128,8 +1250,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconCleanliness,
+                                        color: () {
+                                          if (FFAppState().PriorityCleaness ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityCleaness ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityCleaness ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -1165,30 +1305,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconConvenience =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityConvenience = '중요';
-                          setState(() {
-                            FFAppState().PriorityConvenience = 2;
-                          });
+                          FFAppState().PriorityConvenience = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityConvenience == 2) {
                           FFAppState().ColorIconConvenience =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityConvenience = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityConvenience = 1;
-                          });
+                          FFAppState().PriorityConvenience = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityConvenience == 1) {
                           FFAppState().ColorIconConvenience =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityConvenience = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityConvenience = 4;
-                          });
+                          FFAppState().PriorityConvenience = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconConvenience =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityConvenience = '보통';
-                          setState(() {
-                            FFAppState().PriorityConvenience = 3;
-                          });
+                          FFAppState().PriorityConvenience = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -1237,8 +1373,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconConvenience,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PriorityConvenience ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityConvenience ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityConvenience ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -1262,30 +1417,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconSoundProofing =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPrioritySoundProofing = '중요';
-                          setState(() {
-                            FFAppState().PrioritySoundProofing = 2;
-                          });
+                          FFAppState().PrioritySoundProofing = 2;
+                          setState(() {});
                         } else if (FFAppState().PrioritySoundProofing == 2) {
                           FFAppState().ColorIconSoundProofing =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPrioritySoundProofing = '매우 중요';
-                          setState(() {
-                            FFAppState().PrioritySoundProofing = 1;
-                          });
+                          FFAppState().PrioritySoundProofing = 1;
+                          setState(() {});
                         } else if (FFAppState().PrioritySoundProofing == 1) {
                           FFAppState().ColorIconSoundProofing =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPrioritySoundProofing = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PrioritySoundProofing = 4;
-                          });
+                          FFAppState().PrioritySoundProofing = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconSoundProofing =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPrioritySoundProofing = '보통';
-                          setState(() {
-                            FFAppState().PrioritySoundProofing = 3;
-                          });
+                          FFAppState().PrioritySoundProofing = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -1334,8 +1485,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconSoundProofing,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PrioritySoundProofing ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PrioritySoundProofing ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PrioritySoundProofing ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -1371,30 +1541,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconParkingArea =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPriorityParkingArea = '중요';
-                          setState(() {
-                            FFAppState().PriorityParkingArea = 2;
-                          });
+                          FFAppState().PriorityParkingArea = 2;
+                          setState(() {});
                         } else if (FFAppState().PriorityParkingArea == 2) {
                           FFAppState().ColorIconParkingArea =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPriorityParkingArea = '매우 중요';
-                          setState(() {
-                            FFAppState().PriorityParkingArea = 1;
-                          });
+                          FFAppState().PriorityParkingArea = 1;
+                          setState(() {});
                         } else if (FFAppState().PriorityParkingArea == 1) {
                           FFAppState().ColorIconParkingArea =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPriorityParkingArea = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PriorityParkingArea = 4;
-                          });
+                          FFAppState().PriorityParkingArea = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconParkingArea =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPriorityParkingArea = '보통';
-                          setState(() {
-                            FFAppState().PriorityParkingArea = 3;
-                          });
+                          FFAppState().PriorityParkingArea = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -1443,8 +1609,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconParkingArea,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PriorityParkingArea ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PriorityParkingArea ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PriorityParkingArea ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -1468,30 +1653,26 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                           FFAppState().ColorIconSmokingArea =
                               FlutterFlowTheme.of(context).prioritySecond;
                           FFAppState().StringPrioritySmokingArea = '중요';
-                          setState(() {
-                            FFAppState().PrioritySmokingArea = 2;
-                          });
+                          FFAppState().PrioritySmokingArea = 2;
+                          setState(() {});
                         } else if (FFAppState().PrioritySmokingArea == 2) {
                           FFAppState().ColorIconSmokingArea =
                               FlutterFlowTheme.of(context).prioirtyFirst;
                           FFAppState().StringPrioritySmokingArea = '매우 중요';
-                          setState(() {
-                            FFAppState().PrioritySmokingArea = 1;
-                          });
+                          FFAppState().PrioritySmokingArea = 1;
+                          setState(() {});
                         } else if (FFAppState().PrioritySmokingArea == 1) {
                           FFAppState().ColorIconSmokingArea =
                               FlutterFlowTheme.of(context).secondaryText;
                           FFAppState().StringPrioritySmokingArea = '중요하지 않음';
-                          setState(() {
-                            FFAppState().PrioritySmokingArea = 4;
-                          });
+                          FFAppState().PrioritySmokingArea = 4;
+                          setState(() {});
                         } else {
                           FFAppState().ColorIconSmokingArea =
                               FlutterFlowTheme.of(context).priorityThrid;
                           FFAppState().StringPrioritySmokingArea = '보통';
-                          setState(() {
-                            FFAppState().PrioritySmokingArea = 3;
-                          });
+                          FFAppState().PrioritySmokingArea = 3;
+                          setState(() {});
                         }
                       },
                       child: Container(
@@ -1540,8 +1721,27 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                                       .override(
                                         fontFamily: FlutterFlowTheme.of(context)
                                             .bodyMediumFamily,
-                                        color:
-                                            FFAppState().ColorIconSmokingArea,
+                                        color: () {
+                                          if (FFAppState()
+                                                  .PrioritySmokingArea ==
+                                              1) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioirtyFirst;
+                                          } else if (FFAppState()
+                                                  .PrioritySmokingArea ==
+                                              2) {
+                                            return FlutterFlowTheme.of(context)
+                                                .prioritySecond;
+                                          } else if (FFAppState()
+                                                  .PrioritySmokingArea ==
+                                              3) {
+                                            return FlutterFlowTheme.of(context)
+                                                .priorityThrid;
+                                          } else {
+                                            return FlutterFlowTheme.of(context)
+                                                .secondaryText;
+                                          }
+                                        }(),
                                         letterSpacing: 0.0,
                                         useGoogleFonts: GoogleFonts.asMap()
                                             .containsKey(
@@ -1565,7 +1765,7 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    context.pushNamed('homePage_MAIN');
+                    context.pushNamed('homePage_MAINCopy');
                   },
                   text: '선택 완료',
                   options: FFButtonOptions(

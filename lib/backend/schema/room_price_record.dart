@@ -41,11 +41,6 @@ class RoomPriceRecord extends FirestoreRecord {
   double get internetFeeCost => _internetFeeCost ?? 0.0;
   bool hasInternetFeeCost() => _internetFeeCost != null;
 
-  // "ElectricAndWaterFeeCost" field.
-  double? _electricAndWaterFeeCost;
-  double get electricAndWaterFeeCost => _electricAndWaterFeeCost ?? 0.0;
-  bool hasElectricAndWaterFeeCost() => _electricAndWaterFeeCost != null;
-
   // "MonthCost" field.
   double? _monthCost;
   double get monthCost => _monthCost ?? 0.0;
@@ -56,6 +51,21 @@ class RoomPriceRecord extends FirestoreRecord {
   double get priceReview => _priceReview ?? 0.0;
   bool hasPriceReview() => _priceReview != null;
 
+  // "ElectricFeeCost" field.
+  double? _electricFeeCost;
+  double get electricFeeCost => _electricFeeCost ?? 0.0;
+  bool hasElectricFeeCost() => _electricFeeCost != null;
+
+  // "WaterFeeCost" field.
+  double? _waterFeeCost;
+  double get waterFeeCost => _waterFeeCost ?? 0.0;
+  bool hasWaterFeeCost() => _waterFeeCost != null;
+
+  // "HeatingFeeCost" field.
+  double? _heatingFeeCost;
+  double get heatingFeeCost => _heatingFeeCost ?? 0.0;
+  bool hasHeatingFeeCost() => _heatingFeeCost != null;
+
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
@@ -65,10 +75,11 @@ class RoomPriceRecord extends FirestoreRecord {
         castToType<double>(snapshotData['AdministrationCost']);
     _parkingCost = castToType<double>(snapshotData['ParkingCost']);
     _internetFeeCost = castToType<double>(snapshotData['InternetFeeCost']);
-    _electricAndWaterFeeCost =
-        castToType<double>(snapshotData['ElectricAndWaterFeeCost']);
     _monthCost = castToType<double>(snapshotData['MonthCost']);
     _priceReview = castToType<double>(snapshotData['PriceReview']);
+    _electricFeeCost = castToType<double>(snapshotData['ElectricFeeCost']);
+    _waterFeeCost = castToType<double>(snapshotData['WaterFeeCost']);
+    _heatingFeeCost = castToType<double>(snapshotData['HeatingFeeCost']);
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -116,9 +127,11 @@ Map<String, dynamic> createRoomPriceRecordData({
   double? administrationCost,
   double? parkingCost,
   double? internetFeeCost,
-  double? electricAndWaterFeeCost,
   double? monthCost,
   double? priceReview,
+  double? electricFeeCost,
+  double? waterFeeCost,
+  double? heatingFeeCost,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
@@ -127,9 +140,11 @@ Map<String, dynamic> createRoomPriceRecordData({
       'AdministrationCost': administrationCost,
       'ParkingCost': parkingCost,
       'InternetFeeCost': internetFeeCost,
-      'ElectricAndWaterFeeCost': electricAndWaterFeeCost,
       'MonthCost': monthCost,
       'PriceReview': priceReview,
+      'ElectricFeeCost': electricFeeCost,
+      'WaterFeeCost': waterFeeCost,
+      'HeatingFeeCost': heatingFeeCost,
     }.withoutNulls,
   );
 
@@ -146,9 +161,11 @@ class RoomPriceRecordDocumentEquality implements Equality<RoomPriceRecord> {
         e1?.administrationCost == e2?.administrationCost &&
         e1?.parkingCost == e2?.parkingCost &&
         e1?.internetFeeCost == e2?.internetFeeCost &&
-        e1?.electricAndWaterFeeCost == e2?.electricAndWaterFeeCost &&
         e1?.monthCost == e2?.monthCost &&
-        e1?.priceReview == e2?.priceReview;
+        e1?.priceReview == e2?.priceReview &&
+        e1?.electricFeeCost == e2?.electricFeeCost &&
+        e1?.waterFeeCost == e2?.waterFeeCost &&
+        e1?.heatingFeeCost == e2?.heatingFeeCost;
   }
 
   @override
@@ -158,9 +175,11 @@ class RoomPriceRecordDocumentEquality implements Equality<RoomPriceRecord> {
         e?.administrationCost,
         e?.parkingCost,
         e?.internetFeeCost,
-        e?.electricAndWaterFeeCost,
         e?.monthCost,
-        e?.priceReview
+        e?.priceReview,
+        e?.electricFeeCost,
+        e?.waterFeeCost,
+        e?.heatingFeeCost
       ]);
 
   @override

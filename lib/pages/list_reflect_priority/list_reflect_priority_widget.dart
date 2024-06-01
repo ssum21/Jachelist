@@ -297,13 +297,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() => _model
                                       .amenityExtraOutletsValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchwaterdrain = true;
-                                    });
+                                    FFAppState().switchwaterdrain = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchwaterdrain = false;
-                                    });
+                                    FFAppState().switchwaterdrain = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -381,13 +379,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(
                                       () => _model.amenityACValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().swtichbathroom = true;
-                                    });
+                                    FFAppState().swtichbathroom = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().swtichbathroom = false;
-                                    });
+                                    FFAppState().swtichbathroom = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -465,13 +461,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityHeatingValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchBasicOption = true;
-                                    });
+                                    FFAppState().switchBasicOption = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchBasicOption = false;
-                                    });
+                                    FFAppState().switchBasicOption = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -549,14 +543,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityWasherValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().sWitchGarbageDisposal = true;
-                                    });
+                                    FFAppState().sWitchGarbageDisposal = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().sWitchGarbageDisposal =
-                                          false;
-                                    });
+                                    FFAppState().sWitchGarbageDisposal = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -634,13 +625,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityDryerValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchFloor = true;
-                                    });
+                                    FFAppState().switchFloor = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchFloor = false;
-                                    });
+                                    FFAppState().switchFloor = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -718,13 +707,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityPetsValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchSecurity = true;
-                                    });
+                                    FFAppState().switchSecurity = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchSecurity = false;
-                                    });
+                                    FFAppState().switchSecurity = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -802,13 +789,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityWorkoutValue = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchwindows = true;
-                                    });
+                                    FFAppState().switchwindows = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchwindows = false;
-                                    });
+                                    FFAppState().switchwindows = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -886,13 +871,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityPoolValue2 = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchcleanliness = true;
-                                    });
+                                    FFAppState().switchcleanliness = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchcleanliness = false;
-                                    });
+                                    FFAppState().switchcleanliness = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -970,13 +953,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityPoolValue3 = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchConvenience = true;
-                                    });
+                                    FFAppState().switchConvenience = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchConvenience = false;
-                                    });
+                                    FFAppState().switchConvenience = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -1054,13 +1035,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityPoolValue4 = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchSoundproofing = true;
-                                    });
+                                    FFAppState().switchSoundproofing = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchSoundproofing = false;
-                                    });
+                                    FFAppState().switchSoundproofing = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -1138,13 +1117,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   setState(() =>
                                       _model.amenityPoolValue5 = newValue!);
                                   if (newValue!) {
-                                    setState(() {
-                                      FFAppState().switchParkingArea = true;
-                                    });
+                                    FFAppState().switchParkingArea = true;
+                                    setState(() {});
                                   } else {
-                                    setState(() {
-                                      FFAppState().switchParkingArea = false;
-                                    });
+                                    FFAppState().switchParkingArea = false;
+                                    setState(() {});
                                   }
                                 },
                                 title: Text(
@@ -1226,13 +1203,11 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                     setState(() =>
                                         _model.amenityPoolValue6 = newValue!);
                                     if (newValue!) {
-                                      setState(() {
-                                        FFAppState().switchSmokingArea = true;
-                                      });
+                                      FFAppState().switchSmokingArea = true;
+                                      setState(() {});
                                     } else {
-                                      setState(() {
-                                        FFAppState().switchSmokingArea = false;
-                                      });
+                                      FFAppState().switchSmokingArea = false;
+                                      setState(() {});
                                     }
                                   },
                                   title: Text(

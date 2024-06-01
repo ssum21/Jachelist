@@ -29,10 +29,6 @@ class AddRoomModel extends FlutterFlowModel<AddRoomWidget> {
   FocusNode? roomnameFocusNode;
   TextEditingController? roomnameTextController;
   String? Function(BuildContext, String?)? roomnameTextControllerValidator;
-  // State field(s) for Roomadress widget.
-  FocusNode? roomadressFocusNode;
-  TextEditingController? roomadressTextController;
-  String? Function(BuildContext, String?)? roomadressTextControllerValidator;
   // State field(s) for Roomdesciption widget.
   FocusNode? roomdesciptionFocusNode;
   TextEditingController? roomdesciptionTextController;
@@ -51,9 +47,6 @@ class AddRoomModel extends FlutterFlowModel<AddRoomWidget> {
     unfocusNode.dispose();
     roomnameFocusNode?.dispose();
     roomnameTextController?.dispose();
-
-    roomadressFocusNode?.dispose();
-    roomadressTextController?.dispose();
 
     roomdesciptionFocusNode?.dispose();
     roomdesciptionTextController?.dispose();

@@ -241,24 +241,28 @@ class _AnalyzeRoomWidgetState extends State<AnalyzeRoomWidget> {
                                                             .titleLargeFamily),
                                               ),
                                         ),
-                                        Padding(
-                                          padding:
-                                              EdgeInsetsDirectional.fromSTEB(
-                                                  0.0, 4.0, 0.0, 4.0),
-                                          child: RatingBarIndicator(
-                                            itemBuilder: (context, index) =>
-                                                Icon(
-                                              Icons.star_rounded,
-                                              color:
-                                                  FlutterFlowTheme.of(context)
+                                        Row(
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            Padding(
+                                              padding: EdgeInsetsDirectional
+                                                  .fromSTEB(0.0, 4.0, 0.0, 4.0),
+                                              child: RatingBarIndicator(
+                                                itemBuilder: (context, index) =>
+                                                    Icon(
+                                                  Icons.star_rounded,
+                                                  color: FlutterFlowTheme.of(
+                                                          context)
                                                       .starColor,
+                                                ),
+                                                direction: Axis.horizontal,
+                                                rating: 5.0,
+                                                unratedColor: Color(0xFF95A1AC),
+                                                itemCount: 5,
+                                                itemSize: 24.0,
+                                              ),
                                             ),
-                                            direction: Axis.horizontal,
-                                            rating: 5.0,
-                                            unratedColor: Color(0xFF95A1AC),
-                                            itemCount: 5,
-                                            itemSize: 24.0,
-                                          ),
+                                          ],
                                         ),
                                       ],
                                     ),

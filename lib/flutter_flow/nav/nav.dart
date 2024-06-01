@@ -80,23 +80,14 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NavBarPage() : HomePageMAINWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : HomePageMAINCopyWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) =>
-              appStateNotifier.loggedIn ? NavBarPage() : HomePageMAINWidget(),
-        ),
-        FFRoute(
-          name: 'homePage_MAIN',
-          path: '/homePageMAIN',
-          builder: (context, params) => params.isEmpty
-              ? NavBarPage(initialPage: 'homePage_MAIN')
-              : NavBarPage(
-                  initialPage: 'homePage_MAIN',
-                  page: HomePageMAINWidget(),
-                ),
+          builder: (context, _) => appStateNotifier.loggedIn
+              ? NavBarPage()
+              : HomePageMAINCopyWidget(),
         ),
         FFRoute(
           name: 'profileSettingPage',
@@ -124,7 +115,9 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'PrioritySetting',
           path: '/prioritySetting',
-          builder: (context, params) => PrioritySettingWidget(),
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'PrioritySetting')
+              : PrioritySettingWidget(),
         ),
         FFRoute(
           name: 'ListReflectPriority',
@@ -154,6 +147,21 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
           name: 'AddRoom',
           path: '/addRoom',
           builder: (context, params) => AddRoomWidget(),
+        ),
+        FFRoute(
+          name: 'AnalyzeRoomCopy',
+          path: '/analyzeRoomCopy',
+          builder: (context, params) => AnalyzeRoomCopyWidget(),
+        ),
+        FFRoute(
+          name: 'homePage_MAINCopy',
+          path: '/homePageMAINCopy',
+          builder: (context, params) => params.isEmpty
+              ? NavBarPage(initialPage: 'homePage_MAINCopy')
+              : NavBarPage(
+                  initialPage: 'homePage_MAINCopy',
+                  page: HomePageMAINCopyWidget(),
+                ),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -326,7 +334,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/homePageMAIN';
+            return '/homePageMAINCopy';
           }
           return null;
         },
