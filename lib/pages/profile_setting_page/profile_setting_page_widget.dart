@@ -1,4 +1,3 @@
-import '/auth/firebase_auth/auth_util.dart';
 import '/backend/backend.dart';
 import '/flutter_flow/flutter_flow_animations.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
@@ -246,7 +245,7 @@ class _ProfileSettingPageWidgetState extends State<ProfileSettingPageWidget>
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Switch to Dark Mode',
+                                '[베타] 앱 다크모드로 전환하기',
                                 style: FlutterFlowTheme.of(context)
                                     .bodyMedium
                                     .override(
@@ -475,7 +474,7 @@ class _ProfileSettingPageWidgetState extends State<ProfileSettingPageWidget>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              'Account Details',
+                              '계정 설정',
                               style: FlutterFlowTheme.of(context)
                                   .titleSmall
                                   .override(
@@ -857,28 +856,26 @@ class _ProfileSettingPageWidgetState extends State<ProfileSettingPageWidget>
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 24.0, 0.0, 20.0),
                 child: FFButtonWidget(
                   onPressed: () async {
-                    GoRouter.of(context).prepareAuthEvent();
-                    await authManager.signOut();
-                    GoRouter.of(context).clearRedirectLocation();
-
-                    context.goNamedAuth('homePage_MAINCopy', context.mounted);
+                    await launchURL('https://forms.gle/8VamuGFXBirAy1Ph7');
                   },
-                  text: 'Reference',
+                  text: '자취리스트 평가하기',
                   options: FFButtonOptions(
-                    width: 110.0,
+                    width: 180.0,
                     height: 50.0,
                     padding: EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
                     iconPadding:
                         EdgeInsetsDirectional.fromSTEB(0.0, 0.0, 0.0, 0.0),
-                    color: FlutterFlowTheme.of(context).secondaryBackground,
-                    textStyle: FlutterFlowTheme.of(context).titleSmall.override(
-                          fontFamily: 'Lexend Deca',
-                          color: FlutterFlowTheme.of(context).darkText,
-                          fontSize: 16.0,
+                    color: Color(0xC84B39EF),
+                    textStyle: FlutterFlowTheme.of(context)
+                        .displaySmall
+                        .override(
+                          fontFamily:
+                              FlutterFlowTheme.of(context).displaySmallFamily,
+                          color: FlutterFlowTheme.of(context).tertiary,
+                          fontSize: 15.0,
                           letterSpacing: 0.0,
-                          fontWeight: FontWeight.w500,
-                          useGoogleFonts:
-                              GoogleFonts.asMap().containsKey('Lexend Deca'),
+                          useGoogleFonts: GoogleFonts.asMap().containsKey(
+                              FlutterFlowTheme.of(context).displaySmallFamily),
                         ),
                     elevation: 0.0,
                     borderSide: BorderSide(
@@ -908,7 +905,7 @@ class _ProfileSettingPageWidgetState extends State<ProfileSettingPageWidget>
                           },
                         );
                       },
-                      text: 'Analyze Room',
+                      text: '최적의 자취방 분석하기',
                       options: FFButtonOptions(
                         width: 240.0,
                         height: 60.0,

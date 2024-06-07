@@ -155,7 +155,7 @@ class _NavBarPageState extends State<NavBarPage> {
               Icons.home_rounded,
               size: 24.0,
             ),
-            label: 'Home',
+            label: '메인화면',
             tooltip: '',
           ),
           BottomNavigationBarItem(
@@ -167,7 +167,7 @@ class _NavBarPageState extends State<NavBarPage> {
               Icons.account_circle,
               size: 24.0,
             ),
-            label: 'Profile',
+            label: '프로필',
             tooltip: '',
           )
         ],

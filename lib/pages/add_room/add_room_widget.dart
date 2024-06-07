@@ -37,8 +37,7 @@ class _AddRoomWidgetState extends State<AddRoomWidget> {
     _model.roomnameTextController ??= TextEditingController();
     _model.roomnameFocusNode ??= FocusNode();
 
-    _model.roomdesciptionTextController ??=
-        TextEditingController(text: '메모를 입력해주세요');
+    _model.roomdesciptionTextController ??= TextEditingController();
     _model.roomdesciptionFocusNode ??= FocusNode();
   }
 

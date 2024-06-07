@@ -14,3 +14,9 @@ export '/pages/analyze_room_copy/analyze_room_copy_widget.dart'
     show AnalyzeRoomCopyWidget;
 export '/pages/home_page_m_a_i_n_copy/home_page_m_a_i_n_copy_widget.dart'
     show HomePageMAINCopyWidget;
+export '/pages/starting_a_p_p/starting_a_p_p_widget.dart'
+    show StartingAPPWidget;
+export '/pages/room_star_review_copy/room_star_review_copy_widget.dart'
+    show RoomStarReviewCopyWidget;
+export '/pages/home_page_m_a_i_n_copy_copy/home_page_m_a_i_n_copy_copy_widget.dart'
+    show HomePageMAINCopyCopyWidget;

@@ -932,7 +932,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                     updateCallback: () => setState(() {}),
                                     child: AmenitityIndicatorWidget(
                                       icon: Icon(
-                                        Icons.local_convenience_store_rounded,
+                                        Icons.directions_bus,
                                         color: FlutterFlowTheme.of(context)
                                             .gray600,
                                       ),
@@ -1096,7 +1096,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                     updateCallback: () => setState(() {}),
                                     child: AmenitityIndicatorWidget(
                                       icon: Icon(
-                                        Icons.local_parking,
+                                        Icons.pets_sharp,
                                         color: FlutterFlowTheme.of(context)
                                             .gray600,
                                       ),
@@ -1125,7 +1125,7 @@ class _ListReflectPriorityWidgetState extends State<ListReflectPriorityWidget> {
                                   }
                                 },
                                 title: Text(
-                                  '주차공간',
+                                  '반려동물',
                                   style: FlutterFlowTheme.of(context)
                                       .titleMedium
                                       .override(

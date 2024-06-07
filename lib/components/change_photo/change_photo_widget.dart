@@ -168,7 +168,7 @@ class _ChangePhotoWidgetState extends State<ChangePhotoWidget>
                       padding:
                           EdgeInsetsDirectional.fromSTEB(12.0, 0.0, 0.0, 0.0),
                       child: Text(
-                        'Change Profile Photo',
+                        '프로필 사진 변경',
                         textAlign: TextAlign.start,
                         style:
                             FlutterFlowTheme.of(context).headlineSmall.override(
@@ -263,7 +263,7 @@ class _ChangePhotoWidgetState extends State<ChangePhotoWidget>
                       }
                     }
                   },
-                  text: 'Upload Photo',
+                  text: '사진 업로드',
                   options: FFButtonOptions(
                     width: 150.0,
                     height: 50.0,
@@ -298,7 +298,7 @@ class _ChangePhotoWidgetState extends State<ChangePhotoWidget>
                       photoUrl: _model.uploadedFileUrl,
                     ));
                   },
-                  text: 'Save Photo',
+                  text: '사진 저장하기',
                   options: FFButtonOptions(
                     width: 290.0,
                     height: 50.0,

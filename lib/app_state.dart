@@ -592,7 +592,7 @@ class FFAppState extends ChangeNotifier {
     prefs.setBool('ff_switchBasicOption', _value);
   }
 
-  bool _sWitchGarbageDisposal = true;
+  bool _sWitchGarbageDisposal = false;
   bool get sWitchGarbageDisposal => _sWitchGarbageDisposal;
   set sWitchGarbageDisposal(bool _value) {
     _sWitchGarbageDisposal = _value;
@@ -606,7 +606,7 @@ class FFAppState extends ChangeNotifier {
     prefs.setBool('ff_switchFloor', _value);
   }
 
-  bool _switchSecurity = true;
+  bool _switchSecurity = false;
   bool get switchSecurity => _switchSecurity;
   set switchSecurity(bool _value) {
     _switchSecurity = _value;
@@ -627,7 +627,7 @@ class FFAppState extends ChangeNotifier {
     prefs.setBool('ff_switchcleanliness', _value);
   }
 
-  bool _switchConvenience = true;
+  bool _switchConvenience = false;
   bool get switchConvenience => _switchConvenience;
   set switchConvenience(bool _value) {
     _switchConvenience = _value;
@@ -641,14 +641,14 @@ class FFAppState extends ChangeNotifier {
     prefs.setBool('ff_switchSoundproofing', _value);
   }
 
-  bool _switchParkingArea = true;
+  bool _switchParkingArea = false;
   bool get switchParkingArea => _switchParkingArea;
   set switchParkingArea(bool _value) {
     _switchParkingArea = _value;
     prefs.setBool('ff_switchParkingArea', _value);
   }
 
-  bool _switchSmokingArea = true;
+  bool _switchSmokingArea = false;
   bool get switchSmokingArea => _switchSmokingArea;
   set switchSmokingArea(bool _value) {
     _switchSmokingArea = _value;

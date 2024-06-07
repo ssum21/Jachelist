@@ -1339,7 +1339,7 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                               borderRadius: 30.0,
                               buttonSize: 60.0,
                               icon: Icon(
-                                Icons.local_convenience_store_rounded,
+                                Icons.directions_bus,
                                 color: FlutterFlowTheme.of(context).primary,
                                 size: 30.0,
                               ),
@@ -1575,7 +1575,7 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                               borderRadius: 30.0,
                               buttonSize: 60.0,
                               icon: Icon(
-                                Icons.local_parking,
+                                Icons.pets_sharp,
                                 color: FlutterFlowTheme.of(context).primary,
                                 size: 30.0,
                               ),
@@ -1589,7 +1589,7 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '주차공간',
+                                  '반려동물',
                                   style: FlutterFlowTheme.of(context)
                                       .bodyMedium
                                       .override(
@@ -1765,6 +1765,36 @@ class _PrioritySettingWidgetState extends State<PrioritySettingWidget> {
                 padding: EdgeInsetsDirectional.fromSTEB(0.0, 30.0, 0.0, 0.0),
                 child: FFButtonWidget(
                   onPressed: () async {
+                    // Switch off if priority==4
+                    FFAppState().switchPrice = FFAppState().PriorityPrice != 4;
+                    FFAppState().switchRoomsize =
+                        FFAppState().PriorityRoomSize != 4;
+                    FFAppState().switchwaterdrain =
+                        FFAppState().PriorityWaterDrainage != 4;
+                    FFAppState().swtichbathroom =
+                        FFAppState().PriorityBathroom != 4;
+                    FFAppState().switchBasicOption =
+                        FFAppState().PriorityBasicOption != 4;
+                    FFAppState().sWitchGarbageDisposal =
+                        FFAppState().PriorityGarbageDisposal != 4;
+                    FFAppState().switchFloor = FFAppState().PriorityFloor != 4;
+                    FFAppState().switchSecurity =
+                        FFAppState().PrioritySecurity != 4;
+                    FFAppState().switchwindows =
+                        FFAppState().PriorityWindows != 4;
+                    FFAppState().switchcleanliness =
+                        FFAppState().PriorityCleaness != 4;
+                    FFAppState().switchConvenience =
+                        FFAppState().PriorityConvenience != 4;
+                    FFAppState().switchSoundproofing =
+                        FFAppState().PrioritySoundProofing != 4;
+                    FFAppState().switchParkingArea =
+                        FFAppState().PriorityParkingArea != 4;
+                    FFAppState().switchSmokingArea =
+                        FFAppState().PrioritySmokingArea != 4;
+                    setState(() {});
+                    // Navigate to Main page
+
                     context.pushNamed('homePage_MAINCopy');
                   },
                   text: '선택 완료',

@@ -120,6 +120,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
       heatingTextfieldTextControllerValidator;
   // State field(s) for Pricebar widget.
   double? pricebarValue;
+  // State field(s) for TextFieldPrice widget.
+  FocusNode? textFieldPriceFocusNode;
+  TextEditingController? textFieldPriceTextController;
+  String? Function(BuildContext, String?)?
+      textFieldPriceTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController2;
 
@@ -133,6 +138,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? opensepartebarValue;
   // State field(s) for EaseofFurnitureArrangementbar widget.
   double? easeofFurnitureArrangementbarValue;
+  // State field(s) for TextFieldRoomSize widget.
+  FocusNode? textFieldRoomSizeFocusNode;
+  TextEditingController? textFieldRoomSizeTextController;
+  String? Function(BuildContext, String?)?
+      textFieldRoomSizeTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController3;
 
@@ -146,6 +156,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? drainstatebarValue;
   // State field(s) for Waterpipesatusbar widget.
   double? waterpipesatusbarValue;
+  // State field(s) for TextFieldWaterDrainage widget.
+  FocusNode? textFieldWaterDrainageFocusNode;
+  TextEditingController? textFieldWaterDrainageTextController;
+  String? Function(BuildContext, String?)?
+      textFieldWaterDrainageTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController4;
 
@@ -159,6 +174,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? showerboothbarValue;
   // State field(s) for Gompangyeebar widget.
   double? gompangyeebarValue;
+  // State field(s) for TextFieldBathroom widget.
+  FocusNode? textFieldBathroomFocusNode;
+  TextEditingController? textFieldBathroomTextController;
+  String? Function(BuildContext, String?)?
+      textFieldBathroomTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController5;
 
@@ -172,6 +192,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? gasstovebarValue;
   // State field(s) for airconditionaloptionbar widget.
   double? airconditionaloptionbarValue;
+  // State field(s) for TextFieldBasicOption widget.
+  FocusNode? textFieldBasicOptionFocusNode;
+  TextEditingController? textFieldBasicOptionTextController;
+  String? Function(BuildContext, String?)?
+      textFieldBasicOptionTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController6;
 
@@ -181,6 +206,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? trashlocationbarValue;
   // State field(s) for trashsmellbar widget.
   double? trashsmellbarValue;
+  // State field(s) for TextFieldGarbageDisposal widget.
+  FocusNode? textFieldGarbageDisposalFocusNode;
+  TextEditingController? textFieldGarbageDisposalTextController;
+  String? Function(BuildContext, String?)?
+      textFieldGarbageDisposalTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController7;
 
@@ -192,6 +222,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? elevatorbarValue;
   // State field(s) for stairgoodbar widget.
   double? stairgoodbarValue;
+  // State field(s) for TextFieldFloor widget.
+  FocusNode? textFieldFloorFocusNode;
+  TextEditingController? textFieldFloorTextController;
+  String? Function(BuildContext, String?)?
+      textFieldFloorTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController8;
 
@@ -205,6 +240,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? buildentrycontolbarValue;
   // State field(s) for policebar widget.
   double? policebarValue;
+  // State field(s) for TextFieldSecurity widget.
+  FocusNode? textFieldSecurityFocusNode;
+  TextEditingController? textFieldSecurityTextController;
+  String? Function(BuildContext, String?)?
+      textFieldSecurityTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController9;
 
@@ -216,6 +256,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? sunlightbarValue;
   // State field(s) for windgoodbar widget.
   double? windgoodbarValue;
+  // State field(s) for TextFieldWindows widget.
+  FocusNode? textFieldWindowsFocusNode;
+  TextEditingController? textFieldWindowsTextController;
+  String? Function(BuildContext, String?)?
+      textFieldWindowsTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController10;
 
@@ -229,6 +274,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? kitchencleanbarValue;
   // State field(s) for buildcleanbar widget.
   double? buildcleanbarValue;
+  // State field(s) for TextFieldCleanliness widget.
+  FocusNode? textFieldCleanlinessFocusNode;
+  TextEditingController? textFieldCleanlinessTextController;
+  String? Function(BuildContext, String?)?
+      textFieldCleanlinessTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController11;
 
@@ -240,6 +290,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? busbarValue;
   // State field(s) for schoolbar widget.
   double? schoolbarValue;
+  // State field(s) for TextFieldConvenience widget.
+  FocusNode? textFieldConvenienceFocusNode;
+  TextEditingController? textFieldConvenienceTextController;
+  String? Function(BuildContext, String?)?
+      textFieldConvenienceTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController12;
 
@@ -249,6 +304,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? wallsoundbarValue;
   // State field(s) for outsidesoundbar widget.
   double? outsidesoundbarValue;
+  // State field(s) for TextFieldSoundProofing widget.
+  FocusNode? textFieldSoundProofingFocusNode;
+  TextEditingController? textFieldSoundProofingTextController;
+  String? Function(BuildContext, String?)?
+      textFieldSoundProofingTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController13;
 
@@ -258,6 +318,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? parkingspacebarValue;
   // State field(s) for parkingcostbar widget.
   double? parkingcostbarValue;
+  // State field(s) for TextFieldParkingArea widget.
+  FocusNode? textFieldParkingAreaFocusNode;
+  TextEditingController? textFieldParkingAreaTextController;
+  String? Function(BuildContext, String?)?
+      textFieldParkingAreaTextControllerValidator;
   // State field(s) for Expandable widget.
   late ExpandableController expandableExpandableController14;
 
@@ -269,6 +334,11 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
   double? smokinglocationbarValue;
   // State field(s) for smokingareacleanessbar widget.
   double? smokingareacleanessbarValue;
+  // State field(s) for TextFieldSmokingArea widget.
+  FocusNode? textFieldSmokingAreaFocusNode;
+  TextEditingController? textFieldSmokingAreaTextController;
+  String? Function(BuildContext, String?)?
+      textFieldSmokingAreaTextControllerValidator;
 
   @override
   void initState(BuildContext context) {
@@ -333,31 +403,72 @@ class RoomStarReviewModel extends FlutterFlowModel<RoomStarReviewWidget> {
     heatingTextfieldFocusNode?.dispose();
     heatingTextfieldTextController?.dispose();
 
+    textFieldPriceFocusNode?.dispose();
+    textFieldPriceTextController?.dispose();
+
     expandableExpandableController2.dispose();
     amenitityIndicatorModel2.dispose();
+    textFieldRoomSizeFocusNode?.dispose();
+    textFieldRoomSizeTextController?.dispose();
+
     expandableExpandableController3.dispose();
     amenitityIndicatorModel3.dispose();
+    textFieldWaterDrainageFocusNode?.dispose();
+    textFieldWaterDrainageTextController?.dispose();
+
     expandableExpandableController4.dispose();
     amenitityIndicatorModel4.dispose();
+    textFieldBathroomFocusNode?.dispose();
+    textFieldBathroomTextController?.dispose();
+
     expandableExpandableController5.dispose();
     amenitityIndicatorModel5.dispose();
+    textFieldBasicOptionFocusNode?.dispose();
+    textFieldBasicOptionTextController?.dispose();
+
     expandableExpandableController6.dispose();
     amenitityIndicatorModel6.dispose();
+    textFieldGarbageDisposalFocusNode?.dispose();
+    textFieldGarbageDisposalTextController?.dispose();
+
     expandableExpandableController7.dispose();
     amenitityIndicatorModel7.dispose();
+    textFieldFloorFocusNode?.dispose();
+    textFieldFloorTextController?.dispose();
+
     expandableExpandableController8.dispose();
     amenitityIndicatorModel8.dispose();
+    textFieldSecurityFocusNode?.dispose();
+    textFieldSecurityTextController?.dispose();
+
     expandableExpandableController9.dispose();
     amenitityIndicatorModel9.dispose();
+    textFieldWindowsFocusNode?.dispose();
+    textFieldWindowsTextController?.dispose();
+
     expandableExpandableController10.dispose();
     amenitityIndicatorModel10.dispose();
+    textFieldCleanlinessFocusNode?.dispose();
+    textFieldCleanlinessTextController?.dispose();
+
     expandableExpandableController11.dispose();
     amenitityIndicatorModel11.dispose();
+    textFieldConvenienceFocusNode?.dispose();
+    textFieldConvenienceTextController?.dispose();
+
     expandableExpandableController12.dispose();
     amenitityIndicatorModel12.dispose();
+    textFieldSoundProofingFocusNode?.dispose();
+    textFieldSoundProofingTextController?.dispose();
+
     expandableExpandableController13.dispose();
     amenitityIndicatorModel13.dispose();
+    textFieldParkingAreaFocusNode?.dispose();
+    textFieldParkingAreaTextController?.dispose();
+
     expandableExpandableController14.dispose();
     amenitityIndicatorModel14.dispose();
+    textFieldSmokingAreaFocusNode?.dispose();
+    textFieldSmokingAreaTextController?.dispose();
   }
 }

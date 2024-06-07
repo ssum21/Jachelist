@@ -80,14 +80,13 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
       debugLogDiagnostics: true,
       refreshListenable: appStateNotifier,
       errorBuilder: (context, state) =>
-          appStateNotifier.loggedIn ? NavBarPage() : HomePageMAINCopyWidget(),
+          appStateNotifier.loggedIn ? NavBarPage() : StartingAPPWidget(),
       routes: [
         FFRoute(
           name: '_initialize',
           path: '/',
-          builder: (context, _) => appStateNotifier.loggedIn
-              ? NavBarPage()
-              : HomePageMAINCopyWidget(),
+          builder: (context, _) =>
+              appStateNotifier.loggedIn ? NavBarPage() : StartingAPPWidget(),
         ),
         FFRoute(
           name: 'profileSettingPage',
@@ -162,6 +161,29 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
                   initialPage: 'homePage_MAINCopy',
                   page: HomePageMAINCopyWidget(),
                 ),
+        ),
+        FFRoute(
+          name: 'StartingAPP',
+          path: '/startingAPP',
+          builder: (context, params) => StartingAPPWidget(),
+        ),
+        FFRoute(
+          name: 'RoomStarReviewCopy',
+          path: '/roomStarReviewCopy',
+          asyncParams: {
+            'testRoomDocu': getDoc(['RoomInfo'], RoomInfoRecord.fromSnapshot),
+          },
+          builder: (context, params) => RoomStarReviewCopyWidget(
+            testRoomDocu: params.getParam(
+              'testRoomDocu',
+              ParamType.Document,
+            ),
+          ),
+        ),
+        FFRoute(
+          name: 'homePage_MAINCopyCopy',
+          path: '/homePageMAINCopyCopy',
+          builder: (context, params) => HomePageMAINCopyCopyWidget(),
         )
       ].map((r) => r.toRoute(appStateNotifier)).toList(),
     );
@@ -334,7 +356,7 @@ class FFRoute {
 
           if (requireAuth && !appStateNotifier.loggedIn) {
             appStateNotifier.setRedirectLocationIfUnset(state.uri.toString());
-            return '/homePageMAINCopy';
+            return '/startingAPP';
           }
           return null;
         },
